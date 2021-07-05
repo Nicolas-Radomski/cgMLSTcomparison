@@ -1146,7 +1146,7 @@ dev.off()
 shapiro.test(datarownameNAcol$IAAR)
 # => W = 0.2398, p-value < 2.2e-16
 # => different than gaussian
-### Poisson (https://www.r-bloggers.com/2014/09/bayesian-first-aid-poisson-test/)
+### Poisson
 poisson.test(x = sum(datarownameNAcol$IAAR), T = length(datarownameNAcol$IAAR), r = 1,
              alternative = "two.sided",
              conf.level = 0.95)
@@ -1162,7 +1162,7 @@ poisson.test(x = sum(datarownameNAcol$IAAR), T = length(datarownameNAcol$IAAR), 
              conf.level = 0.95)
 # => number of events = 4102009, time base = 2436, p-value < 2.2e-16
 # => different than one side poisson distribution with upper hypothesis (𝐻𝐻0: 𝜆𝜆2 − 𝜆𝜆1 ≤ 0 vs. 𝐻𝐻𝐴𝐴: 𝜆𝜆2 − 𝜆𝜆1 > 0)
-### uniform (https://stats.stackexchange.com/questions/257681/test-for-uniformity-in-r)
+### uniform
 chisq.test(datarownameNAcol$IAAR)
 # => X-squared = 107092, df = 2435, p-value < 2.2e-16
 # => different than uniform
@@ -1337,7 +1337,7 @@ poisson.test(x = sum(datarownameNArow$IAAR), T = length(datarownameNArow$IAAR), 
              conf.level = 0.95)
 # => number of events = 3492649, time base = 2016, p-value < 2.2e-16
 # => different than one side poisson distribution with upper hypothesis (𝐻𝐻0: 𝜆𝜆2 − 𝜆𝜆1 ≤ 0 vs. 𝐻𝐻𝐴𝐴: 𝜆𝜆2 − 𝜆𝜆1 > 0)
-### uniform (https://stats.stackexchange.com/questions/257681/test-for-uniformity-in-r)
+### uniform
 chisq.test(datarownameNArow$IAAR)
 # => X-squared = 5913.9, df = 2015, p-value < 2.2e-16
 # => different than uniform
@@ -1652,7 +1652,7 @@ shapiro.test(datarownameNArowGLM.SeqSphere$IAAR)
 shapiro.test(datarownameNArowGLM.BioNumerics$IAAR)
 # => W = 0.44714, p-value < 2.2e-16
 # => different than gaussian
-### Poisson (https://www.r-bloggers.com/2014/09/bayesian-first-aid-poisson-test/)
+### Poisson
 poisson.test(x = sum(datarownameNArowGLM.BIGSdb$IAAR), T = length(datarownameNArowGLM.BIGSdb$IAAR), r = 1,
              alternative = "two.sided",
              conf.level = 0.95)
@@ -1716,7 +1716,7 @@ poisson.test(x = sum(datarownameNArowGLM.BioNumerics$IAAR), T = length(datarowna
              conf.level = 0.95)
 # => number of events = 707608, time base = 420, p-value < 2.2e-16
 # => different than one side poisson distribution with upper hypothesis (𝐻𝐻0: 𝜆𝜆2 − 𝜆𝜆1 ≤ 0 vs. 𝐻𝐻𝐴𝐴: 𝜆𝜆2 − 𝜆𝜆1 > 0)
-### uniform (https://stats.stackexchange.com/questions/257681/test-for-uniformity-in-r)
+### uniform
 chisq.test(datarownameNArowGLM.BIGSdb$IAAR)
 # => X-squared = 1.9744, df = 419, p-value = 1
 # => uniform
@@ -1732,7 +1732,7 @@ chisq.test(datarownameNArowGLM.SeqSphere$IAAR)
 chisq.test(datarownameNArowGLM.BioNumerics$IAAR)
 # => X-squared = 5359.9, df = 419, p-value < 2.2e-16
 # => different than uniform
-### dooble check uniform (https://www.rdocumentation.org/packages/spgs/versions/1.0-3/topics/chisq.unif.test)
+### dooble check uniform
 datarownameNArowGLM.BIGSdb$IAAR.rate <- datarownameNArowGLM.BIGSdb$IAAR / 1748
 chisq.unif.test(datarownameNArowGLM.BIGSdb$IAAR.rate, min.bin.size=10)
 # => Error in chisq.test(counts, ...) : 'x' must at least have 2 elements
@@ -2288,18 +2288,18 @@ write.table(table_ATCCBAA679, file = "Accuracy_ATCCBAA679.csv", sep = ",", col.n
 
 ## all ATCC included
 table_ATCC=ddply(data_cgMLST_short, .(targeted_depth), summarize, 
-                      BIGSdb_mean=mean(BIGSdb), 
-                      BIGSdb_sd=sd(BIGSdb), 
-                      INNUENDO_mean=mean(INNUENDO), 
-                      INNUENDO_sd=sd(INNUENDO),
-                      GENPAT_mean=mean(GENPAT), 
-                      GENPAT_sd=sd(GENPAT),
-                      SeqSphere_mean=mean(SeqSphere), 
-                      SeqSphere_sd=sd(SeqSphere),
-                      BioNumerics_mean=mean(BioNumerics), 
-                      BioNumerics_sd=sd(BioNumerics),
-                      MentaLiST_mean=mean(MentaLiST), 
-                      MentaLiST_sd=sd(MentaLiST))
+       BIGSdb_mean=mean(BIGSdb), 
+       BIGSdb_sd=sd(BIGSdb), 
+       INNUENDO_mean=mean(INNUENDO), 
+       INNUENDO_sd=sd(INNUENDO),
+       GENPAT_mean=mean(GENPAT), 
+       GENPAT_sd=sd(GENPAT),
+       SeqSphere_mean=mean(SeqSphere), 
+       SeqSphere_sd=sd(SeqSphere),
+       BioNumerics_mean=mean(BioNumerics), 
+       BioNumerics_sd=sd(BioNumerics),
+       MentaLiST_mean=mean(MentaLiST), 
+       MentaLiST_sd=sd(MentaLiST))
 write.table(table_ATCC, file = "Accuracy_ATCC.csv", sep = ",", col.names = NA)
 
 ## all DrDk included
