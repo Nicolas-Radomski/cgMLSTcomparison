@@ -1183,9 +1183,9 @@ names(datarownameNAcolGLM)[names(datarownameNAcolGLM) == "RB"] <- "BREADTH"
 colnames(datarownameNAcolGLM)
 str(datarownameNAcolGLM)
 
-## select the variable to explain and the variables of interest (do not add IAAR and DrDk because already linear with others)
-formulaAddition <- IAAR~REFERENCE+PLATING+DNA+SEQUENCING+DEPTH+BREADTH+WORKFLOW
-formulaMultiplication <- IAAR~REFERENCE*PLATING*DNA*SEQUENCING*DEPTH*BREADTH*WORKFLOW
+## select the variable to explain and the variables of interest (do not add DrDk because already linear with DEPTH)
+formulaAddition <- IAAR~REFERENCE+PLATING+DNA+SEQUENCING+DEPTH+BREADTH+WORKFLOW+IAAS
+formulaMultiplication <- IAAR~REFERENCE*PLATING*DNA*SEQUENCING*DEPTH*BREADTH*WORKFLOW*IAAS
 
 ## run GLM
 GLM1 <- glm(formulaAddition, data=datarownameNAcolGLM, family = poisson)
@@ -1200,11 +1200,11 @@ GLM6 <- glm(formulaMultiplication, data=datarownameNAcolGLM, family = quasipoiss
 
 ### test over dispersion  (i.e. alpha > 0 with p<5%)
 dispersiontest(GLM1,trafo=1)
-# => z = 11.076, p-value < 2.2e-16
-# => sample estimates: alpha 39.19848 
+# => z = 11.069, p-value < 2.2e-16
+# => sample estimates: alpha 39.17442
 dispersiontest(GLM2,trafo=1)
-# => z = 11.076, p-value < 2.2e-16
-# => sample estimates: alpha 39.19848 
+# => z = 11.069, p-value < 2.2e-16
+# => sample estimates: alpha 39.17442
 dispersiontest(GLM3,trafo=1)
 # => only Poisson GLMs can be tested
 # => presence of  GLM overdispersion => keep quasipoisson (GLM3)
@@ -1216,64 +1216,66 @@ comment <- scan(what="character")
 Call: glm(formula = formulaAddition, family = poisson, data = datarownameNAcolGLM)
 Deviance Residuals: 
   Min       1Q   Median       3Q      Max  
--51.873   -1.556    0.424    2.825    9.427  
+-51.924   -1.574    0.446    2.844    9.400  
 Coefficients: (1 not defined because of singularities)
 Estimate Std. Error  z value Pr(>|z|)    
-(Intercept)          -4.827e+01  1.262e+00  -38.241  < 2e-16 ***
-REFERENCEATCC19115   -2.402e-02  1.383e-03  -17.377  < 2e-16 ***
-REFERENCEATCCBAA679  -3.202e-02  1.479e-03  -21.646  < 2e-16 ***
-PLATINGfifth_culture -1.766e-02  1.726e-03  -10.235  < 2e-16 ***
-PLATINGtenth_culture -2.393e-02  1.760e-03  -13.600  < 2e-16 ***
-DNAextraction_A      -7.445e-03  1.318e-03   -5.650  1.6e-08 ***
-DNAextraction_B      -4.527e-03  1.311e-03   -3.454 0.000553 ***
+(Intercept)          -4.939e+01  1.270e+00  -38.874  < 2e-16 ***
+REFERENCEATCC19115   -3.015e-02  1.590e-03  -18.959  < 2e-16 ***
+REFERENCEATCCBAA679  -3.815e-02  1.675e-03  -22.772  < 2e-16 ***
+PLATINGfifth_culture -1.767e-02  1.726e-03  -10.237  < 2e-16 ***
+PLATINGtenth_culture -2.394e-02  1.760e-03  -13.604  < 2e-16 ***
+DNAextraction_A      -7.447e-03  1.318e-03   -5.652 1.59e-08 ***
+DNAextraction_B      -4.528e-03  1.311e-03   -3.454 0.000552 ***
 DNAextraction_C              NA         NA       NA       NA    
-SEQUENCINGNextSeq_B  -2.255e-02  1.100e-03  -20.502  < 2e-16 ***
-DEPTH                 8.127e-04  2.942e-05   27.623  < 2e-16 ***
-BREADTH               5.611e-01  1.273e-02   44.069  < 2e-16 ***
-WORKFLOWINNUENDO     -2.132e-02  1.761e-03  -12.107  < 2e-16 ***
-WORKFLOWGENPAT       -1.093e-03  1.652e-03   -0.662 0.508211    
+SEQUENCINGNextSeq_B  -2.256e-02  1.100e-03  -20.508  < 2e-16 ***
+DEPTH                 8.124e-04  2.942e-05   27.613  < 2e-16 ***
+BREADTH               5.613e-01  1.273e-02   44.082  < 2e-16 ***
+WORKFLOWINNUENDO     -2.005e-02  1.768e-03  -11.342  < 2e-16 ***
+WORKFLOWGENPAT        1.680e-04  1.660e-03    0.101 0.919392    
 WORKFLOWSeqSphere     4.500e-05  1.652e-03    0.027 0.978260    
-WORKFLOWBioNumerics  -3.559e-02  1.666e-03  -21.355  < 2e-16 ***
+WORKFLOWBioNumerics  -2.872e-02  1.884e-03  -15.243  < 2e-16 ***
 WORKFLOWMentaLiST    -1.851e-01  1.733e-03 -106.763  < 2e-16 ***
+IAAS                  6.301e-04  8.098e-05    7.781 7.21e-15 ***
   ---
   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 (Dispersion parameter for poisson family taken to be 1)
 Null deviance: 185666  on 2435  degrees of freedom
-Residual deviance: 154861  on 2421  degrees of freedom
-AIC: 177192
+Residual deviance: 154801  on 2420  degrees of freedom
+AIC: 177133
 Number of Fisher Scoring iterations: 4
 rm(comment)
 
 summary(GLM2)
 comment <- scan(what="character")
-Call: glm(formula = formulaAddition, family = poisson(link = "log"),data = datarownameNAcolGLM)
+Call: glm(formula = formulaAddition, family = poisson(link = "log"), data = datarownameNAcolGLM)
 Deviance Residuals: 
   Min       1Q   Median       3Q      Max  
--51.873   -1.556    0.424    2.825    9.427  
+-51.924   -1.574    0.446    2.844    9.400  
 Coefficients: (1 not defined because of singularities)
 Estimate Std. Error  z value Pr(>|z|)    
-(Intercept)          -4.827e+01  1.262e+00  -38.241  < 2e-16 ***
-REFERENCEATCC19115   -2.402e-02  1.383e-03  -17.377  < 2e-16 ***
-REFERENCEATCCBAA679  -3.202e-02  1.479e-03  -21.646  < 2e-16 ***
-PLATINGfifth_culture -1.766e-02  1.726e-03  -10.235  < 2e-16 ***
-PLATINGtenth_culture -2.393e-02  1.760e-03  -13.600  < 2e-16 ***
-DNAextraction_A      -7.445e-03  1.318e-03   -5.650  1.6e-08 ***
-DNAextraction_B      -4.527e-03  1.311e-03   -3.454 0.000553 ***
+(Intercept)          -4.939e+01  1.270e+00  -38.874  < 2e-16 ***
+REFERENCEATCC19115   -3.015e-02  1.590e-03  -18.959  < 2e-16 ***
+REFERENCEATCCBAA679  -3.815e-02  1.675e-03  -22.772  < 2e-16 ***
+PLATINGfifth_culture -1.767e-02  1.726e-03  -10.237  < 2e-16 ***
+PLATINGtenth_culture -2.394e-02  1.760e-03  -13.604  < 2e-16 ***
+DNAextraction_A      -7.447e-03  1.318e-03   -5.652 1.59e-08 ***
+DNAextraction_B      -4.528e-03  1.311e-03   -3.454 0.000552 ***
 DNAextraction_C              NA         NA       NA       NA    
-SEQUENCINGNextSeq_B  -2.255e-02  1.100e-03  -20.502  < 2e-16 ***
-DEPTH                 8.127e-04  2.942e-05   27.623  < 2e-16 ***
-BREADTH               5.611e-01  1.273e-02   44.069  < 2e-16 ***
-WORKFLOWINNUENDO     -2.132e-02  1.761e-03  -12.107  < 2e-16 ***
-WORKFLOWGENPAT       -1.093e-03  1.652e-03   -0.662 0.508211    
+SEQUENCINGNextSeq_B  -2.256e-02  1.100e-03  -20.508  < 2e-16 ***
+DEPTH                 8.124e-04  2.942e-05   27.613  < 2e-16 ***
+BREADTH               5.613e-01  1.273e-02   44.082  < 2e-16 ***
+WORKFLOWINNUENDO     -2.005e-02  1.768e-03  -11.342  < 2e-16 ***
+WORKFLOWGENPAT        1.680e-04  1.660e-03    0.101 0.919392    
 WORKFLOWSeqSphere     4.500e-05  1.652e-03    0.027 0.978260    
-WORKFLOWBioNumerics  -3.559e-02  1.666e-03  -21.355  < 2e-16 ***
+WORKFLOWBioNumerics  -2.872e-02  1.884e-03  -15.243  < 2e-16 ***
 WORKFLOWMentaLiST    -1.851e-01  1.733e-03 -106.763  < 2e-16 ***
+IAAS                  6.301e-04  8.098e-05    7.781 7.21e-15 ***
   ---
   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 (Dispersion parameter for poisson family taken to be 1)
 Null deviance: 185666  on 2435  degrees of freedom
-Residual deviance: 154861  on 2421  degrees of freedom
-AIC: 177192
+Residual deviance: 154801  on 2420  degrees of freedom
+AIC: 177133
 Number of Fisher Scoring iterations: 4
 rm(comment)
 
@@ -1282,30 +1284,31 @@ comment <- scan(what="character")
 Call: glm(formula = formulaAddition, family = quasipoisson, data = datarownameNAcolGLM)
 Deviance Residuals: 
   Min       1Q   Median       3Q      Max  
--51.873   -1.556    0.424    2.825    9.427  
+-51.924   -1.574    0.446    2.844    9.400  
 Coefficients: (1 not defined because of singularities)
 Estimate Std. Error t value Pr(>|t|)    
-(Intercept)          -4.827e+01  8.029e+00  -6.013 2.10e-09 ***
-REFERENCEATCC19115   -2.402e-02  8.793e-03  -2.732 0.006335 ** 
-REFERENCEATCCBAA679  -3.202e-02  9.407e-03  -3.404 0.000676 ***
-PLATINGfifth_culture -1.766e-02  1.097e-02  -1.609 0.107694    
-PLATINGtenth_culture -2.393e-02  1.119e-02  -2.138 0.032586 *  
-DNAextraction_A      -7.445e-03  8.380e-03  -0.888 0.374404    
-DNAextraction_B      -4.527e-03  8.336e-03  -0.543 0.587150    
+(Intercept)          -4.939e+01  8.079e+00  -6.113 1.14e-09 ***
+REFERENCEATCC19115   -3.015e-02  1.011e-02  -2.981 0.002899 ** 
+REFERENCEATCCBAA679  -3.815e-02  1.065e-02  -3.581 0.000349 ***
+PLATINGfifth_culture -1.767e-02  1.097e-02  -1.610 0.107568    
+PLATINGtenth_culture -2.394e-02  1.119e-02  -2.139 0.032522 *  
+DNAextraction_A      -7.447e-03  8.379e-03  -0.889 0.374225    
+DNAextraction_B      -4.528e-03  8.335e-03  -0.543 0.587039    
 DNAextraction_C              NA         NA      NA       NA    
-SEQUENCINGNextSeq_B  -2.255e-02  6.995e-03  -3.224 0.001282 ** 
-DEPTH                 8.127e-04  1.871e-04   4.343 1.46e-05 ***
-BREADTH               5.611e-01  8.098e-02   6.929 5.40e-12 ***
-WORKFLOWINNUENDO     -2.132e-02  1.120e-02  -1.904 0.057083 .  
-WORKFLOWGENPAT       -1.093e-03  1.051e-02  -0.104 0.917154    
-WORKFLOWSeqSphere     4.500e-05  1.050e-02   0.004 0.996582    
-WORKFLOWBioNumerics  -3.559e-02  1.060e-02  -3.358 0.000798 ***
-WORKFLOWMentaLiST    -1.851e-01  1.102e-02 -16.787  < 2e-16 ***
-  ---
+SEQUENCINGNextSeq_B  -2.256e-02  6.995e-03  -3.225 0.001277 ** 
+DEPTH                 8.124e-04  1.871e-04   4.342 1.47e-05 ***
+BREADTH               5.613e-01  8.097e-02   6.932 5.31e-12 ***
+WORKFLOWINNUENDO     -2.005e-02  1.124e-02  -1.784 0.074616 .  
+WORKFLOWGENPAT        1.680e-04  1.056e-02   0.016 0.987305    
+WORKFLOWSeqSphere     4.500e-05  1.050e-02   0.004 0.996581    
+WORKFLOWBioNumerics  -2.872e-02  1.198e-02  -2.397 0.016605 *  
+WORKFLOWMentaLiST    -1.851e-01  1.102e-02 -16.789  < 2e-16 ***
+IAAS                  6.301e-04  5.150e-04   1.224 0.221255    
+---
   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-(Dispersion parameter for quasipoisson family taken to be 40.44835)
+(Dispersion parameter for quasipoisson family taken to be 40.44085)
 Null deviance: 185666  on 2435  degrees of freedom
-Residual deviance: 154861  on 2421  degrees of freedom
+Residual deviance: 154801  on 2420  degrees of freedom
 AIC: NA
 Number of Fisher Scoring iterations: 4
 rm(comment)
@@ -1358,9 +1361,9 @@ names(datarownameNArowGLM)[names(datarownameNArowGLM) == "RB"] <- "BREADTH"
 colnames(datarownameNArowGLM)
 str(datarownameNArowGLM)
 
-## select the variable to explain and the variables of interest (do not add IAAR and DrDk because already linear with others)
-formulaAdditionAssembly <- IAAR~REFERENCE+PLATING+DNA+SEQUENCING+DEPTH+BREADTH+WORKFLOW+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
-formulaMultiplicationAssembly <- IAAR~REFERENCE*PLATING*DNA*SEQUENCING*DEPTH*BREADTH*WORKFLOW*C0*C1000*C5000*C10000*C25000*C50000*TL0*TL1000*TL5000*TL10000*TL25000*TL50000*LC*TL*GC*N50*NG50*N75*NG75*L50*LG50*L75*LG75*MA*MAC*MACL*LMA*SQEM*SQLM*UAMC*UAC*UACP*UAL*GF*DR*N100*MM100*ID100*LA*TAL*NA50*NGA50*NA75*NGA75*LA50*LGA50*LA75*LGA75
+## select the variable to explain and the variables of interest (do not add DrDk because already linear with others)
+formulaAdditionAssembly <- IAAR~REFERENCE+PLATING+DNA+SEQUENCING+DEPTH+BREADTH+WORKFLOW+IAAS+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
+formulaMultiplicationAssembly <- IAAR~REFERENCE*PLATING*DNA*SEQUENCING*DEPTH*BREADTH*WORKFLOW*IAAS**C0*C1000*C5000*C10000*C25000*C50000*TL0*TL1000*TL5000*TL10000*TL25000*TL50000*LC*TL*GC*N50*NG50*N75*NG75*L50*LG50*L75*LG75*MA*MAC*MACL*LMA*SQEM*SQLM*UAMC*UAC*UACP*UAL*GF*DR*N100*MM100*ID100*LA*TAL*NA50*NGA50*NA75*NGA75*LA50*LGA50*LA75*LGA75
 
 ## run GLM
 AssemblyGLM1 <- glm(formulaAdditionAssembly, data=datarownameNArowGLM, family = poisson)
@@ -1375,11 +1378,11 @@ AssemblyGLM6 <- glm(formulaMultiplicationAssembly, data=datarownameNArowGLM, fam
 
 ### test over dispersion (i.e. alpha > 0 with p<5%)
 dispersiontest(AssemblyGLM1,trafo=1)
-# => z = -459.98, p-value = 1
-# => sample estimates: alpha -0.9768956 
+# => z = -454.29, p-value = 1
+# => sample estimates: alpha -0.9875226 
 dispersiontest(AssemblyGLM2,trafo=1)
-# => z = -459.98, p-value = 1
-# => sample estimates: alpha -0.9768956
+# => z = -454.29, p-value = 1
+# => sample estimates: alpha -0.9875226 
 dispersiontest(AssemblyGLM3,trafo=1)
 # => only Poisson GLMs can be tested
 # => absence of GLM overdispersion => keep poisson (AssemblyGLM1)
@@ -1391,78 +1394,79 @@ comment <- scan(what="character")
 Call: glm(formula = formulaAdditionAssembly, family = poisson, data = datarownameNArowGLM)
 Deviance Residuals: 
   Min        1Q    Median        3Q       Max  
--1.27186  -0.06358   0.00432   0.07613   1.46527  
+-1.37988  -0.03322   0.00203   0.03558   1.51349  
 Coefficients: (2 not defined because of singularities)
 Estimate Std. Error z value Pr(>|z|)    
-(Intercept)           7.324e+00  5.978e+00   1.225  0.22053    
-REFERENCEATCC19115    9.029e-03  4.340e-02   0.208  0.83521    
-REFERENCEATCCBAA679   1.344e-02  5.127e-02   0.262  0.79326    
-PLATINGfifth_culture  1.106e-04  1.921e-03   0.058  0.95409    
-PLATINGtenth_culture  1.150e-04  1.973e-03   0.058  0.95351    
-DNAextraction_A       3.917e-04  1.467e-03   0.267  0.78945    
-DNAextraction_B       7.111e-05  1.441e-03   0.049  0.96065    
+(Intercept)           5.343e+00  5.993e+00   0.892  0.37262    
+REFERENCEATCC19115    3.125e-02  4.366e-02   0.716  0.47414    
+REFERENCEATCCBAA679   3.784e-02  5.153e-02   0.734  0.46283    
+PLATINGfifth_culture  6.164e-05  1.921e-03   0.032  0.97440    
+PLATINGtenth_culture  9.518e-05  1.973e-03   0.048  0.96153    
+DNAextraction_A       1.432e-04  1.468e-03   0.098  0.92231    
+DNAextraction_B       1.176e-05  1.442e-03   0.008  0.99349    
 DNAextraction_C              NA         NA      NA       NA    
-SEQUENCINGNextSeq_B  -2.848e-04  1.245e-03  -0.229  0.81904    
-DEPTH                -1.293e-05  3.528e-05  -0.367  0.71395    
-BREADTH               4.535e-03  1.486e-02   0.305  0.76024    
-WORKFLOWINNUENDO     -6.138e-03  3.339e-03  -1.839  0.06598 .  
-WORKFLOWGENPAT       -3.454e-03  2.711e-03  -1.274  0.20258    
-WORKFLOWSeqSphere    -1.765e-03  6.896e-03  -0.256  0.79802    
-WORKFLOWBioNumerics  -8.250e-03  3.265e-03  -2.526  0.01152 *  
-C0                   -4.045e-04  2.571e-04  -1.573  0.11564    
-C1000                 2.343e-03  1.413e-03   1.658  0.09740 .  
-C5000                -2.660e-03  5.975e-03  -0.445  0.65626    
-C10000               -2.293e-03  7.809e-03  -0.294  0.76908    
-C25000                2.761e-03  8.001e-03   0.345  0.73007    
-C50000                3.029e-04  4.907e-03   0.062  0.95078    
-TL0                   5.351e-06  2.270e-06   2.357  0.01840 *  
-TL1000               -1.609e-06  1.264e-06  -1.273  0.20295    
-TL5000                4.763e-07  1.156e-06   0.412  0.68020    
-TL10000              -2.391e-07  9.742e-07  -0.245  0.80612    
-TL25000              -7.757e-08  3.651e-07  -0.212  0.83176    
-TL50000              -2.508e-08  1.312e-07  -0.191  0.84845    
-LC                   -1.817e-08  5.606e-08  -0.324  0.74579    
+SEQUENCINGNextSeq_B  -2.146e-04  1.245e-03  -0.172  0.86317    
+DEPTH                -4.393e-06  3.533e-05  -0.124  0.90104    
+BREADTH               4.290e-03  1.486e-02   0.289  0.77284    
+WORKFLOWINNUENDO     -2.036e-03  3.454e-03  -0.589  0.55560    
+WORKFLOWGENPAT       -2.665e-03  2.717e-03  -0.981  0.32656    
+WORKFLOWSeqSphere    -3.396e-03  6.904e-03  -0.492  0.62285    
+WORKFLOWBioNumerics  -5.518e-05  3.714e-03  -0.015  0.98815    
+IAAS                  5.810e-04  1.256e-04   4.627 3.71e-06 ***
+C0                   -2.787e-04  2.585e-04  -1.078  0.28102    
+C1000                 1.129e-03  1.438e-03   0.785  0.43238    
+C5000                -9.297e-04  5.988e-03  -0.155  0.87662    
+C10000               -7.646e-04  7.817e-03  -0.098  0.92209    
+C25000               -6.099e-04  8.036e-03  -0.076  0.93950    
+C50000                1.248e-03  4.911e-03   0.254  0.79946    
+TL0                   6.088e-06  2.275e-06   2.676  0.00746 ** 
+TL1000               -1.202e-06  1.267e-06  -0.949  0.34284    
+TL5000                1.116e-07  1.158e-06   0.096  0.92328    
+TL10000              -3.424e-08  9.753e-07  -0.035  0.97200    
+TL25000               6.223e-09  3.656e-07   0.017  0.98642    
+TL50000              -4.691e-08  1.313e-07  -0.357  0.72094    
+LC                   -1.443e-08  5.600e-08  -0.258  0.79666    
 TL                           NA         NA      NA       NA    
-GC                   -2.142e-02  1.313e-01  -0.163  0.87042    
-N50                  -1.149e-08  7.702e-08  -0.149  0.88136    
-NG50                 -2.408e-09  9.198e-08  -0.026  0.97911    
-N75                  -1.717e-08  1.894e-07  -0.091  0.92776    
-NG75                  2.559e-08  1.912e-07   0.134  0.89354    
-L50                   4.591e-03  1.249e-02   0.368  0.71319    
-LG50                 -4.764e-03  1.270e-02  -0.375  0.70763    
-L75                   1.455e-03  1.010e-02   0.144  0.88546    
-LG75                 -2.100e-04  9.485e-03  -0.022  0.98233    
-MA                   -2.890e-03  9.172e-03  -0.315  0.75268    
-MAC                   4.194e-03  1.048e-02   0.400  0.68900    
-MACL                 -2.150e-09  9.472e-09  -0.227  0.82046    
-LMA                  -8.799e-05  7.344e-04  -0.120  0.90463    
-SQEM                 -6.713e-04  3.749e-03  -0.179  0.85787    
-SQLM                 -2.004e-05  7.705e-04  -0.026  0.97925    
-UAMC                 -4.266e-03  1.729e-02  -0.247  0.80513    
-UAC                   1.094e-03  6.548e-04   1.670  0.09488 .  
-UACP                  5.128e-03  4.423e-03   1.159  0.24629    
-UAL                  -6.389e-06  2.425e-06  -2.635  0.00841 ** 
-GF                   -5.788e-03  3.349e-02  -0.173  0.86279    
-DR                    1.116e-01  3.067e+00   0.036  0.97097    
-N100                 -3.305e-04  1.827e-05 -18.093  < 2e-16 ***
-MM100                -3.564e-04  1.190e-03  -0.299  0.76458    
-ID100                -4.020e-03  6.048e-03  -0.665  0.50624    
-LA                    1.748e-08  5.587e-08   0.313  0.75437    
-TAL                  -3.545e-06  1.806e-06  -1.964  0.04959 *  
-NA50                 -2.427e-09  1.033e-07  -0.023  0.98126    
-NGA50                 5.985e-09  1.139e-07   0.053  0.95808    
-NA75                  1.479e-09  1.088e-07   0.014  0.98915    
-NGA75                -1.038e-09  1.019e-07  -0.010  0.99187    
-LA50                 -5.131e-03  1.308e-02  -0.392  0.69495    
-LGA50                 3.968e-03  1.295e-02   0.306  0.75928    
-LA75                 -1.655e-03  8.549e-03  -0.194  0.84650    
-LGA75                -7.794e-04  7.643e-03  -0.102  0.91877    
+GC                   -7.733e-02  1.319e-01  -0.586  0.55756    
+N50                   3.594e-08  7.767e-08   0.463  0.64354    
+NG50                 -5.392e-08  9.261e-08  -0.582  0.56042    
+N75                  -8.383e-08  1.900e-07  -0.441  0.65907    
+NG75                  7.817e-08  1.916e-07   0.408  0.68337    
+L50                   5.598e-03  1.249e-02   0.448  0.65388    
+LG50                 -6.861e-03  1.270e-02  -0.540  0.58911    
+L75                  -2.874e-03  1.014e-02  -0.283  0.77698    
+LG75                  2.585e-03  9.505e-03   0.272  0.78568    
+MA                   -5.408e-03  9.188e-03  -0.589  0.55615    
+MAC                   6.786e-03  1.049e-02   0.647  0.51785    
+MACL                 -1.304e-09  9.470e-09  -0.138  0.89047    
+LMA                  -2.237e-05  7.345e-04  -0.030  0.97571    
+SQEM                 -6.377e-05  3.750e-03  -0.017  0.98643    
+SQLM                 -1.817e-05  7.703e-04  -0.024  0.98119    
+UAMC                 -2.647e-03  1.730e-02  -0.153  0.87836    
+UAC                   6.976e-04  6.603e-04   1.056  0.29075    
+UACP                  4.574e-03  4.425e-03   1.034  0.30133    
+UAL                  -6.501e-06  2.425e-06  -2.681  0.00734 ** 
+GF                   -8.626e-03  3.350e-02  -0.258  0.79678    
+DR                   -3.048e-01  3.068e+00  -0.099  0.92087    
+N100                 -3.284e-04  1.827e-05 -17.970  < 2e-16 ***
+MM100                -2.434e-04  1.190e-03  -0.204  0.83801    
+ID100                 3.193e-03  6.246e-03   0.511  0.60918    
+LA                    1.630e-08  5.580e-08   0.292  0.77022    
+TAL                  -3.298e-06  1.806e-06  -1.826  0.06786 .  
+NA50                 -6.894e-09  1.033e-07  -0.067  0.94678    
+NGA50                 2.060e-08  1.139e-07   0.181  0.85647    
+NA75                  1.486e-08  1.088e-07   0.137  0.89142    
+NGA75                -1.093e-08  1.019e-07  -0.107  0.91462    
+LA50                 -3.245e-03  1.308e-02  -0.248  0.80414    
+LGA50                 3.945e-03  1.294e-02   0.305  0.76052    
+LA75                  1.266e-03  8.574e-03   0.148  0.88265    
+LGA75                -1.412e-03  7.644e-03  -0.185  0.85342    
 ---
   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 (Dispersion parameter for poisson family taken to be 1)
 Null deviance: 6542.130  on 2015  degrees of freedom
-Residual deviance:   46.562  on 1955  degrees of freedom
-AIC: 18906
+Residual deviance:   25.142  on 1954  degrees of freedom
+AIC: 18886
 Number of Fisher Scoring iterations: 3
 rm(comment)
 
@@ -1471,78 +1475,79 @@ comment <- scan(what="character")
 Call: glm(formula = formulaAdditionAssembly, family = poisson(link = "log"),data = datarownameNArowGLM)
 Deviance Residuals: 
   Min        1Q    Median        3Q       Max  
--1.27186  -0.06358   0.00432   0.07613   1.46527  
+-1.37988  -0.03322   0.00203   0.03558   1.51349  
 Coefficients: (2 not defined because of singularities)
 Estimate Std. Error z value Pr(>|z|)    
-(Intercept)           7.324e+00  5.978e+00   1.225  0.22053    
-REFERENCEATCC19115    9.029e-03  4.340e-02   0.208  0.83521    
-REFERENCEATCCBAA679   1.344e-02  5.127e-02   0.262  0.79326    
-PLATINGfifth_culture  1.106e-04  1.921e-03   0.058  0.95409    
-PLATINGtenth_culture  1.150e-04  1.973e-03   0.058  0.95351    
-DNAextraction_A       3.917e-04  1.467e-03   0.267  0.78945    
-DNAextraction_B       7.111e-05  1.441e-03   0.049  0.96065    
+(Intercept)           5.343e+00  5.993e+00   0.892  0.37262    
+REFERENCEATCC19115    3.125e-02  4.366e-02   0.716  0.47414    
+REFERENCEATCCBAA679   3.784e-02  5.153e-02   0.734  0.46283    
+PLATINGfifth_culture  6.164e-05  1.921e-03   0.032  0.97440    
+PLATINGtenth_culture  9.518e-05  1.973e-03   0.048  0.96153    
+DNAextraction_A       1.432e-04  1.468e-03   0.098  0.92231    
+DNAextraction_B       1.176e-05  1.442e-03   0.008  0.99349    
 DNAextraction_C              NA         NA      NA       NA    
-SEQUENCINGNextSeq_B  -2.848e-04  1.245e-03  -0.229  0.81904    
-DEPTH                -1.293e-05  3.528e-05  -0.367  0.71395    
-BREADTH               4.535e-03  1.486e-02   0.305  0.76024    
-WORKFLOWINNUENDO     -6.138e-03  3.339e-03  -1.839  0.06598 .  
-WORKFLOWGENPAT       -3.454e-03  2.711e-03  -1.274  0.20258    
-WORKFLOWSeqSphere    -1.765e-03  6.896e-03  -0.256  0.79802    
-WORKFLOWBioNumerics  -8.250e-03  3.265e-03  -2.526  0.01152 *  
-C0                   -4.045e-04  2.571e-04  -1.573  0.11564    
-C1000                 2.343e-03  1.413e-03   1.658  0.09740 .  
-C5000                -2.660e-03  5.975e-03  -0.445  0.65626    
-C10000               -2.293e-03  7.809e-03  -0.294  0.76908    
-C25000                2.761e-03  8.001e-03   0.345  0.73007    
-C50000                3.029e-04  4.907e-03   0.062  0.95078    
-TL0                   5.351e-06  2.270e-06   2.357  0.01840 *  
-TL1000               -1.609e-06  1.264e-06  -1.273  0.20295    
-TL5000                4.763e-07  1.156e-06   0.412  0.68020    
-TL10000              -2.391e-07  9.742e-07  -0.245  0.80612    
-TL25000              -7.757e-08  3.651e-07  -0.212  0.83176    
-TL50000              -2.508e-08  1.312e-07  -0.191  0.84845    
-LC                   -1.817e-08  5.606e-08  -0.324  0.74579    
+SEQUENCINGNextSeq_B  -2.146e-04  1.245e-03  -0.172  0.86317    
+DEPTH                -4.393e-06  3.533e-05  -0.124  0.90104    
+BREADTH               4.290e-03  1.486e-02   0.289  0.77284    
+WORKFLOWINNUENDO     -2.036e-03  3.454e-03  -0.589  0.55560    
+WORKFLOWGENPAT       -2.665e-03  2.717e-03  -0.981  0.32656    
+WORKFLOWSeqSphere    -3.396e-03  6.904e-03  -0.492  0.62285    
+WORKFLOWBioNumerics  -5.518e-05  3.714e-03  -0.015  0.98815    
+IAAS                  5.810e-04  1.256e-04   4.627 3.71e-06 ***
+C0                   -2.787e-04  2.585e-04  -1.078  0.28102    
+C1000                 1.129e-03  1.438e-03   0.785  0.43238    
+C5000                -9.297e-04  5.988e-03  -0.155  0.87662    
+C10000               -7.646e-04  7.817e-03  -0.098  0.92209    
+C25000               -6.099e-04  8.036e-03  -0.076  0.93950    
+C50000                1.248e-03  4.911e-03   0.254  0.79946    
+TL0                   6.088e-06  2.275e-06   2.676  0.00746 ** 
+TL1000               -1.202e-06  1.267e-06  -0.949  0.34284    
+TL5000                1.116e-07  1.158e-06   0.096  0.92328    
+TL10000              -3.424e-08  9.753e-07  -0.035  0.97200    
+TL25000               6.223e-09  3.656e-07   0.017  0.98642    
+TL50000              -4.691e-08  1.313e-07  -0.357  0.72094    
+LC                   -1.443e-08  5.600e-08  -0.258  0.79666    
 TL                           NA         NA      NA       NA    
-GC                   -2.142e-02  1.313e-01  -0.163  0.87042    
-N50                  -1.149e-08  7.702e-08  -0.149  0.88136    
-NG50                 -2.408e-09  9.198e-08  -0.026  0.97911    
-N75                  -1.717e-08  1.894e-07  -0.091  0.92776    
-NG75                  2.559e-08  1.912e-07   0.134  0.89354    
-L50                   4.591e-03  1.249e-02   0.368  0.71319    
-LG50                 -4.764e-03  1.270e-02  -0.375  0.70763    
-L75                   1.455e-03  1.010e-02   0.144  0.88546    
-LG75                 -2.100e-04  9.485e-03  -0.022  0.98233    
-MA                   -2.890e-03  9.172e-03  -0.315  0.75268    
-MAC                   4.194e-03  1.048e-02   0.400  0.68900    
-MACL                 -2.150e-09  9.472e-09  -0.227  0.82046    
-LMA                  -8.799e-05  7.344e-04  -0.120  0.90463    
-SQEM                 -6.713e-04  3.749e-03  -0.179  0.85787    
-SQLM                 -2.004e-05  7.705e-04  -0.026  0.97925    
-UAMC                 -4.266e-03  1.729e-02  -0.247  0.80513    
-UAC                   1.094e-03  6.548e-04   1.670  0.09488 .  
-UACP                  5.128e-03  4.423e-03   1.159  0.24629    
-UAL                  -6.389e-06  2.425e-06  -2.635  0.00841 ** 
-GF                   -5.788e-03  3.349e-02  -0.173  0.86279    
-DR                    1.116e-01  3.067e+00   0.036  0.97097    
-N100                 -3.305e-04  1.827e-05 -18.093  < 2e-16 ***
-MM100                -3.564e-04  1.190e-03  -0.299  0.76458    
-ID100                -4.020e-03  6.048e-03  -0.665  0.50624    
-LA                    1.748e-08  5.587e-08   0.313  0.75437    
-TAL                  -3.545e-06  1.806e-06  -1.964  0.04959 *  
-NA50                 -2.427e-09  1.033e-07  -0.023  0.98126    
-NGA50                 5.985e-09  1.139e-07   0.053  0.95808    
-NA75                  1.479e-09  1.088e-07   0.014  0.98915    
-NGA75                -1.038e-09  1.019e-07  -0.010  0.99187    
-LA50                 -5.131e-03  1.308e-02  -0.392  0.69495    
-LGA50                 3.968e-03  1.295e-02   0.306  0.75928    
-LA75                 -1.655e-03  8.549e-03  -0.194  0.84650    
-LGA75                -7.794e-04  7.643e-03  -0.102  0.91877    
+GC                   -7.733e-02  1.319e-01  -0.586  0.55756    
+N50                   3.594e-08  7.767e-08   0.463  0.64354    
+NG50                 -5.392e-08  9.261e-08  -0.582  0.56042    
+N75                  -8.383e-08  1.900e-07  -0.441  0.65907    
+NG75                  7.817e-08  1.916e-07   0.408  0.68337    
+L50                   5.598e-03  1.249e-02   0.448  0.65388    
+LG50                 -6.861e-03  1.270e-02  -0.540  0.58911    
+L75                  -2.874e-03  1.014e-02  -0.283  0.77698    
+LG75                  2.585e-03  9.505e-03   0.272  0.78568    
+MA                   -5.408e-03  9.188e-03  -0.589  0.55615    
+MAC                   6.786e-03  1.049e-02   0.647  0.51785    
+MACL                 -1.304e-09  9.470e-09  -0.138  0.89047    
+LMA                  -2.237e-05  7.345e-04  -0.030  0.97571    
+SQEM                 -6.377e-05  3.750e-03  -0.017  0.98643    
+SQLM                 -1.817e-05  7.703e-04  -0.024  0.98119    
+UAMC                 -2.647e-03  1.730e-02  -0.153  0.87836    
+UAC                   6.976e-04  6.603e-04   1.056  0.29075    
+UACP                  4.574e-03  4.425e-03   1.034  0.30133    
+UAL                  -6.501e-06  2.425e-06  -2.681  0.00734 ** 
+GF                   -8.626e-03  3.350e-02  -0.258  0.79678    
+DR                   -3.048e-01  3.068e+00  -0.099  0.92087    
+N100                 -3.284e-04  1.827e-05 -17.970  < 2e-16 ***
+MM100                -2.434e-04  1.190e-03  -0.204  0.83801    
+ID100                 3.193e-03  6.246e-03   0.511  0.60918    
+LA                    1.630e-08  5.580e-08   0.292  0.77022    
+TAL                  -3.298e-06  1.806e-06  -1.826  0.06786 .  
+NA50                 -6.894e-09  1.033e-07  -0.067  0.94678    
+NGA50                 2.060e-08  1.139e-07   0.181  0.85647    
+NA75                  1.486e-08  1.088e-07   0.137  0.89142    
+NGA75                -1.093e-08  1.019e-07  -0.107  0.91462    
+LA50                 -3.245e-03  1.308e-02  -0.248  0.80414    
+LGA50                 3.945e-03  1.294e-02   0.305  0.76052    
+LA75                  1.266e-03  8.574e-03   0.148  0.88265    
+LGA75                -1.412e-03  7.644e-03  -0.185  0.85342    
 ---
   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 (Dispersion parameter for poisson family taken to be 1)
 Null deviance: 6542.130  on 2015  degrees of freedom
-Residual deviance:   46.562  on 1955  degrees of freedom
-AIC: 18906
+Residual deviance:   25.142  on 1954  degrees of freedom
+AIC: 18886
 Number of Fisher Scoring iterations: 3
 rm(comment)
 
@@ -1551,78 +1556,82 @@ comment <- scan(what="character")
 Call: glm(formula = formulaAdditionAssembly, family = quasipoisson,data = datarownameNArowGLM)
 Deviance Residuals: 
   Min        1Q    Median        3Q       Max  
--1.27186  -0.06358   0.00432   0.07613   1.46527  
+-1.37988  -0.03322   0.00203   0.03558   1.51349  
 Coefficients: (2 not defined because of singularities)
 Estimate Std. Error  t value Pr(>|t|)    
-(Intercept)           7.324e+00  9.227e-01    7.937 3.45e-15 ***
-REFERENCEATCC19115    9.029e-03  6.700e-03    1.348  0.17792    
-REFERENCEATCCBAA679   1.344e-02  7.914e-03    1.698  0.08968 .  
-PLATINGfifth_culture  1.106e-04  2.965e-04    0.373  0.70919    
-PLATINGtenth_culture  1.150e-04  3.046e-04    0.378  0.70570    
-DNAextraction_A       3.917e-04  2.265e-04    1.730  0.08380 .  
-DNAextraction_B       7.111e-05  2.225e-04    0.320  0.74930    
+(Intercept)           5.343e+00  6.799e-01    7.858 6.40e-15 ***
+REFERENCEATCC19115    3.125e-02  4.954e-03    6.308 3.48e-10 ***
+REFERENCEATCCBAA679   3.784e-02  5.847e-03    6.471 1.23e-10 ***
+PLATINGfifth_culture  6.164e-05  2.179e-04    0.283 0.777307    
+PLATINGtenth_culture  9.518e-05  2.239e-04    0.425 0.670800    
+DNAextraction_A       1.432e-04  1.666e-04    0.860 0.390146    
+DNAextraction_B       1.176e-05  1.636e-04    0.072 0.942675    
 DNAextraction_C              NA         NA       NA       NA    
-SEQUENCINGNextSeq_B  -2.848e-04  1.921e-04   -1.482  0.13847    
-DEPTH                -1.293e-05  5.446e-06   -2.375  0.01766 *  
-BREADTH               4.535e-03  2.294e-03    1.977  0.04817 *  
-WORKFLOWINNUENDO     -6.138e-03  5.153e-04  -11.911  < 2e-16 ***
-WORKFLOWGENPAT       -3.454e-03  4.185e-04   -8.255 2.75e-16 ***
-WORKFLOWSeqSphere    -1.765e-03  1.064e-03   -1.658  0.09749 .  
-WORKFLOWBioNumerics  -8.250e-03  5.040e-04  -16.368  < 2e-16 ***
-C0                   -4.045e-04  3.968e-05  -10.193  < 2e-16 ***
-C1000                 2.343e-03  2.181e-04   10.739  < 2e-16 ***
-C5000                -2.660e-03  9.223e-04   -2.884  0.00398 ** 
-C10000               -2.293e-03  1.205e-03   -1.902  0.05733 .  
-C25000                2.761e-03  1.235e-03    2.235  0.02551 *  
-C50000                3.029e-04  7.574e-04    0.400  0.68928    
-TL0                   5.351e-06  3.504e-07   15.273  < 2e-16 ***
-TL1000               -1.609e-06  1.951e-07   -8.248 2.91e-16 ***
-TL5000                4.763e-07  1.784e-07    2.670  0.00764 ** 
-TL10000              -2.391e-07  1.504e-07   -1.590  0.11197    
-TL25000              -7.757e-08  5.636e-08   -1.376  0.16886    
-TL50000              -2.508e-08  2.025e-08   -1.238  0.21586    
-LC                   -1.817e-08  8.654e-09   -2.100  0.03583 *  
+SEQUENCINGNextSeq_B  -2.146e-04  1.413e-04   -1.519 0.128944    
+DEPTH                -4.393e-06  4.008e-06   -1.096 0.273244    
+BREADTH               4.290e-03  1.686e-03    2.544 0.011034 *  
+WORKFLOWINNUENDO     -2.036e-03  3.919e-04   -5.195 2.26e-07 ***
+WORKFLOWGENPAT       -2.665e-03  3.082e-04   -8.647  < 2e-16 ***
+WORKFLOWSeqSphere    -3.396e-03  7.834e-04   -4.335 1.53e-05 ***
+WORKFLOWBioNumerics  -5.518e-05  4.214e-04   -0.131 0.895829    
+IAAS                  5.810e-04  1.425e-05   40.781  < 2e-16 ***
+C0                   -2.787e-04  2.933e-05   -9.501  < 2e-16 ***
+C1000                 1.129e-03  1.631e-04    6.920 6.11e-12 ***
+C5000                -9.297e-04  6.794e-04   -1.368 0.171367    
+C10000               -7.646e-04  8.869e-04   -0.862 0.388784    
+C25000               -6.099e-04  9.118e-04   -0.669 0.503656    
+C50000                1.248e-03  5.573e-04    2.239 0.025268 *  
+TL0                   6.088e-06  2.582e-07   23.581  < 2e-16 ***
+TL1000               -1.202e-06  1.438e-07   -8.360  < 2e-16 ***
+TL5000                1.116e-07  1.314e-07    0.849 0.396110    
+TL10000              -3.424e-08  1.107e-07   -0.309 0.757059    
+TL25000               6.223e-09  4.149e-08    0.150 0.880779    
+TL50000              -4.691e-08  1.490e-08   -3.148 0.001668 ** 
+LC                   -1.443e-08  6.354e-09   -2.271 0.023259 *  
 TL                           NA         NA       NA       NA    
-GC                   -2.142e-02  2.027e-02   -1.057  0.29074    
-N50                  -1.149e-08  1.189e-08   -0.967  0.33369    
-NG50                 -2.408e-09  1.420e-08   -0.170  0.86533    
-N75                  -1.717e-08  2.923e-08   -0.587  0.55701    
-NG75                  2.559e-08  2.952e-08    0.867  0.38607    
-L50                   4.591e-03  1.928e-03    2.381  0.01734 *  
-LG50                 -4.764e-03  1.961e-03   -2.430  0.01520 *  
-L75                   1.455e-03  1.559e-03    0.933  0.35080    
-LG75                 -2.100e-04  1.464e-03   -0.143  0.88593    
-MA                   -2.890e-03  1.416e-03   -2.041  0.04134 *  
-MAC                   4.194e-03  1.618e-03    2.593  0.00959 ** 
-MACL                 -2.150e-09  1.462e-09   -1.470  0.14163    
-LMA                  -8.799e-05  1.134e-04   -0.776  0.43769    
-SQEM                 -6.713e-04  5.786e-04   -1.160  0.24611    
-SQLM                 -2.004e-05  1.189e-04   -0.168  0.86621    
-UAMC                 -4.266e-03  2.669e-03   -1.598  0.11013    
-UAC                   1.094e-03  1.011e-04   10.820  < 2e-16 ***
-UACP                  5.128e-03  6.827e-04    7.511 8.85e-14 ***
-UAL                  -6.389e-06  3.742e-07  -17.071  < 2e-16 ***
-GF                   -5.788e-03  5.170e-03   -1.120  0.26298    
-DR                    1.116e-01  4.733e-01    0.236  0.81365    
-N100                 -3.305e-04  2.820e-06 -117.218  < 2e-16 ***
-MM100                -3.564e-04  1.837e-04   -1.940  0.05250 .  
-ID100                -4.020e-03  9.335e-04   -4.306 1.74e-05 ***
-LA                    1.748e-08  8.624e-09    2.027  0.04279 *  
-TAL                  -3.545e-06  2.787e-07  -12.721  < 2e-16 ***
-NA50                 -2.427e-09  1.595e-08   -0.152  0.87903    
-NGA50                 5.985e-09  1.758e-08    0.341  0.73348    
-NA75                  1.479e-09  1.679e-08    0.088  0.92983    
-NGA75                -1.038e-09  1.573e-08   -0.066  0.94738    
-LA50                 -5.131e-03  2.020e-03   -2.541  0.01114 *  
-LGA50                 3.968e-03  1.999e-03    1.985  0.04726 *  
-LA75                 -1.655e-03  1.320e-03   -1.254  0.20993    
-LGA75                -7.794e-04  1.180e-03   -0.661  0.50886    
+GC                   -7.733e-02  1.496e-02   -5.169 2.60e-07 ***
+N50                   3.594e-08  8.813e-09    4.078 4.72e-05 ***
+NG50                 -5.392e-08  1.051e-08   -5.131 3.16e-07 ***
+N75                  -8.383e-08  2.156e-08   -3.889 0.000104 ***
+NG75                  7.817e-08  2.174e-08    3.595 0.000333 ***
+L50                   5.598e-03  1.417e-03    3.952 8.03e-05 ***
+LG50                 -6.861e-03  1.441e-03   -4.760 2.07e-06 ***
+L75                  -2.874e-03  1.151e-03   -2.497 0.012624 *  
+LG75                  2.585e-03  1.078e-03    2.397 0.016641 *  
+MA                   -5.408e-03  1.043e-03   -5.187 2.35e-07 ***
+MAC                   6.786e-03  1.191e-03    5.699 1.39e-08 ***
+MACL                 -1.304e-09  1.074e-09   -1.214 0.225021    
+LMA                  -2.237e-05  8.334e-05   -0.268 0.788435    
+SQEM                 -6.377e-05  4.255e-04   -0.150 0.880883    
+SQLM                 -1.817e-05  8.740e-05   -0.208 0.835378    
+UAMC                 -2.647e-03  1.963e-03   -1.349 0.177541    
+UAC                   6.976e-04  7.492e-05    9.311  < 2e-16 ***
+UACP                  4.574e-03  5.021e-04    9.110  < 2e-16 ***
+UAL                  -6.501e-06  2.751e-07  -23.630  < 2e-16 ***
+GF                   -8.626e-03  3.800e-03   -2.270 0.023338 *  
+DR                   -3.048e-01  3.481e-01   -0.875 0.381415    
+N100                 -3.284e-04  2.073e-06 -158.378  < 2e-16 ***
+MM100                -2.434e-04  1.351e-04   -1.802 0.071736 .  
+ID100                 3.193e-03  7.086e-04    4.506 7.00e-06 ***
+LA                    1.630e-08  6.331e-09    2.574 0.010117 *  
+TAL                  -3.298e-06  2.049e-07  -16.093  < 2e-16 ***
+NA50                 -6.894e-09  1.172e-08   -0.588 0.556419    
+NGA50                 2.060e-08  1.292e-08    1.594 0.111084    
+NA75                  1.486e-08  1.235e-08    1.203 0.229077    
+NGA75                -1.093e-08  1.156e-08   -0.945 0.344834    
+LA50                 -3.245e-03  1.485e-03   -2.186 0.028957 *  
+LGA50                 3.945e-03  1.469e-03    2.686 0.007286 ** 
+LA75                  1.266e-03  9.728e-04    1.301 0.193442    
+LGA75                -1.412e-03  8.673e-04   -1.628 0.103624    
 ---
   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-(Dispersion parameter for quasipoisson family taken to be 0.02382528)
+
+(Dispersion parameter for quasipoisson family taken to be 0.01287379)
+
 Null deviance: 6542.130  on 2015  degrees of freedom
-Residual deviance:   46.562  on 1955  degrees of freedom
+Residual deviance:   25.142  on 1954  degrees of freedom
 AIC: NA
+
 Number of Fisher Scoring iterations: 3
 rm(comment)
 
@@ -1757,9 +1766,9 @@ hist(datarownameNArowGLM.GENPAT$IAAR)
 hist(datarownameNArowGLM.SeqSphere$IAAR)
 hist(datarownameNArowGLM.BioNumerics$IAAR)
 
-## select the variable to explain and the variables of interest (do not add IAAR and DrDk because already linear with others)
-formulaAdditionAssemblyAlone <- IAAR~REFERENCE+PLATING+DNA+SEQUENCING+DEPTH+BREADTH+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
-formulaMultiplicationAssemblyAlone <- IAAR~REFERENCE*PLATING*DNA*SEQUENCING*DEPTH*BREADTH*C0*C1000*C5000*C10000*C25000*C50000*TL0*TL1000*TL5000*TL10000*TL25000*TL50000*LC*TL*GC*N50*NG50*N75*NG75*L50*LG50*L75*LG75*MA*MAC*MACL*LMA*SQEM*SQLM*UAMC*UAC*UACP*UAL*GF*DR*N100*MM100*ID100*LA*TAL*NA50*NGA50*NA75*NGA75*LA50*LGA50*LA75*LGA75
+## select the variable to explain and the variables of interest (do not add DrDk because already linear with others)
+formulaAdditionAssemblyAlone <- IAAR~REFERENCE+PLATING+DNA+SEQUENCING+DEPTH+BREADTH+IAAS+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
+formulaMultiplicationAssemblyAlone <- IAAR~REFERENCE*PLATING*DNA*SEQUENCING*DEPTH*BREADTH*IAAS*C0*C1000*C5000*C10000*C25000*C50000*TL0*TL1000*TL5000*TL10000*TL25000*TL50000*LC*TL*GC*N50*NG50*N75*NG75*L50*LG50*L75*LG75*MA*MAC*MACL*LMA*SQEM*SQLM*UAMC*UAC*UACP*UAL*GF*DR*N100*MM100*ID100*LA*TAL*NA50*NGA50*NA75*NGA75*LA50*LGA50*LA75*LGA75
 
 ## run GLM
 BIGSdbGLM1 <- glm(formulaAdditionAssemblyAlone, data=datarownameNArowGLM.BIGSdb, family = poisson)
@@ -1822,31 +1831,31 @@ dispersiontest(BioNumericsGLM3,trafo=1)
 # => only Poisson GLMs can be tested
 # => absence of  GLM overdispersion => keep poisson (BioNumericsGLM1)
 
-## check significant Pr(>|t|) Intercept and significant parameters
-summary(BIGSdbGLM1) #0.652 (no significant parameters)
-summary(BIGSdbGLM2) #0.652 (no significant parameters)
-summary(BIGSdbGLM3) #< 2e-16 (several significant parameters)
-summary(INNUENDOGLM1) #0.602 (no significant parameters)
-summary(INNUENDOGLM2) #0.602 (no significant parameters)
-summary(INNUENDOGLM3) #< 2e-16 (several significant parameters)
-summary(GENPATGLM1) #0.821 (no significant parameters)
-summary(GENPATGLM2) #0.821 (no significant parameters)
-summary(GENPATGLM3) #< 2e-16 (several significant parameters)
-summary(SeqSphereGLM1) #0.680 (no significant parameters)
-summary(SeqSphereGLM2) #0.680 (no significant parameters)
-summary(SeqSphereGLM3) #< 2e-16 (several significant parameters)
-summary(BioNumericsGLM1) #0.955 (one significant parameters: N100)
-summary(BioNumericsGLM2) #0.955 (no significant parameters)
-summary(BioNumericsGLM3) #0.73023 (several significant parameters)
+## check significant parameters (<0.01)
+summary(BIGSdbGLM1) # no significant parameters
+summary(BIGSdbGLM2) # no significant parameters
+summary(BIGSdbGLM3) # 18 significant parameters
+summary(INNUENDOGLM1) # no significant parameters
+summary(INNUENDOGLM2) # no significant parameters
+summary(INNUENDOGLM3) # 8 significant parameters
+summary(GENPATGLM1) # no significant parameters
+summary(GENPATGLM2) # no significant parameters
+summary(GENPATGLM3) # 18 significant parameters
+summary(SeqSphereGLM1) # no significant parameters
+summary(SeqSphereGLM2) # no significant parameters
+summary(SeqSphereGLM3) # 20 significant parameters
+summary(BioNumericsGLM1) # 1 significant parameters: N100
+summary(BioNumericsGLM2) # 1 significant parameters: N100
+summary(BioNumericsGLM3) # 17 significant parameters
 
 ## keep GLM1
 summary(BIGSdbGLM1)
 comment <- scan(what="character")
-Call: glm(formula = formulaAdditionAssemblyAlone, family = poisson,data = datarownameNArowGLM.BIGSdb)
+Call: glm(formula = formulaAdditionAssemblyAlone, family = poisson, data = datarownameNArowGLM.BIGSdb)
 Deviance Residuals: 
   Min         1Q     Median         3Q        Max  
 -0.075249  -0.006135   0.000345   0.006807   0.084397  
-Coefficients: (3 not defined because of singularities)
+Coefficients: (4 not defined because of singularities)
 Estimate Std. Error z value Pr(>|z|)
 (Intercept)           7.896e+00  1.751e+01   0.451    0.652
 REFERENCEATCC19115    1.225e-02  1.355e-01   0.090    0.928
@@ -1859,6 +1868,7 @@ DNAextraction_C              NA         NA      NA       NA
 SEQUENCINGNextSeq_B  -2.148e-05  2.842e-03  -0.008    0.994
 DEPTH                 1.174e-06  8.097e-05   0.015    0.988
 BREADTH               2.061e-04  3.467e-02   0.006    0.995
+IAAS                         NA         NA      NA       NA
 C0                    8.394e-05  4.111e-03   0.020    0.984
 C1000                -2.246e-04  5.777e-03  -0.039    0.969
 C5000                -2.914e-04  1.747e-02  -0.017    0.987
@@ -1916,11 +1926,11 @@ rm(comment)
 
 summary(INNUENDOGLM1)
 comment <- scan(what="character")
-Call: glm(formula = formulaAdditionAssemblyAlone, family = poisson,data = datarownameNArowGLM.INNUENDO)
+Call: glm(formula = formulaAdditionAssemblyAlone, family = poisson, data = datarownameNArowGLM.INNUENDO)
 Deviance Residuals: 
   Min          1Q      Median          3Q         Max  
 -0.0208000  -0.0009894   0.0005833   0.0022093   0.0086684  
-Coefficients: (11 not defined because of singularities)
+Coefficients: (12 not defined because of singularities)
 Estimate Std. Error z value Pr(>|z|)
 (Intercept)           7.301e+00  1.399e+01   0.522    0.602
 REFERENCEATCC19115    1.690e-03  4.076e-01   0.004    0.997
@@ -1933,6 +1943,7 @@ DNAextraction_C              NA         NA      NA       NA
 SEQUENCINGNextSeq_B   1.230e-05  3.342e-03   0.004    0.997
 DEPTH                -5.146e-07  9.506e-05  -0.005    0.996
 BREADTH              -3.956e-05  3.629e-02  -0.001    0.999
+IAAS                         NA         NA      NA       NA
 C0                   -2.789e-05  2.738e-03  -0.010    0.992
 C1000                 3.049e-05  4.581e-03   0.007    0.995
 C5000                 3.779e-05  1.628e-02   0.002    0.998
@@ -1990,11 +2001,11 @@ rm(comment)
 
 summary(GENPATGLM1)
 comment <- scan(what="character")
-Call: glm(formula = formulaAdditionAssemblyAlone, family = poisson,data = datarownameNArowGLM.GENPAT)
+Call: glm(formula = formulaAdditionAssemblyAlone, family = poisson, data = datarownameNArowGLM.GENPAT)
 Deviance Residuals: 
   Min         1Q     Median         3Q        Max  
 -0.064526  -0.003717   0.000834   0.004754   0.083201  
-Coefficients: (3 not defined because of singularities)
+Coefficients: (4 not defined because of singularities)
 Estimate Std. Error z value Pr(>|z|)
 (Intercept)           6.783e+00  3.001e+01   0.226    0.821
 REFERENCEATCC19115    9.840e-03  2.181e-01   0.045    0.964
@@ -2007,6 +2018,7 @@ DNAextraction_C              NA         NA      NA       NA
 SEQUENCINGNextSeq_B  -2.235e-05  3.145e-03  -0.007    0.994
 DEPTH                -6.306e-07  8.220e-05  -0.008    0.994
 BREADTH               3.938e-04  3.491e-02   0.011    0.991
+IAAS                         NA         NA      NA       NA
 C0                    1.341e-05  1.843e-03   0.007    0.994
 C1000                -2.087e-04  4.953e-03  -0.042    0.966
 C5000                -6.371e-05  2.532e-02  -0.003    0.998
@@ -2064,11 +2076,11 @@ rm(comment)
 
 summary(SeqSphereGLM1)
 comment <- scan(what="character")
-Call: glm(formula = formulaAdditionAssemblyAlone, family = poisson,data = datarownameNArowGLM.SeqSphere)
+Call: glm(formula = formulaAdditionAssemblyAlone, family = poisson, data = datarownameNArowGLM.SeqSphere)
 Deviance Residuals: 
   Min         1Q     Median         3Q        Max  
 -0.080994  -0.004923   0.000630   0.006767   0.065263  
-Coefficients: (6 not defined because of singularities)
+Coefficients: (7 not defined because of singularities)
 Estimate Std. Error z value Pr(>|z|)
 (Intercept)           6.691e+00  1.623e+01   0.412    0.680
 REFERENCEATCC19115    1.212e-02  2.106e-01   0.058    0.954
@@ -2081,6 +2093,7 @@ DNAextraction_C              NA         NA      NA       NA
 SEQUENCINGNextSeq_B  -8.202e-05  2.926e-03  -0.028    0.978
 DEPTH                 5.583e-07  8.585e-05   0.007    0.995
 BREADTH               7.943e-04  3.456e-02   0.023    0.982
+IAAS                         NA         NA      NA       NA
 C0                    1.141e-06  6.963e-04   0.002    0.999
 C1000                -1.653e-04  3.523e-03  -0.047    0.963
 C5000                 7.474e-04  1.230e-02   0.061    0.952
@@ -2138,11 +2151,11 @@ rm(comment)
 
 summary(BioNumericsGLM1)
 comment <- scan(what="character")
-Call: glm(formula = formulaAdditionAssemblyAlone, family = poisson,data = datarownameNArowGLM.BioNumerics)
+Call: glm(formula = formulaAdditionAssemblyAlone, family = poisson, data = datarownameNArowGLM.BioNumerics)
 Deviance Residuals: 
   Min        1Q    Median        3Q       Max  
 -0.93420  -0.05068   0.00220   0.05196   0.91224  
-Coefficients: (2 not defined because of singularities)
+Coefficients: (3 not defined because of singularities)
 Estimate Std. Error z value Pr(>|z|)    
 (Intercept)           9.897e-01  1.756e+01   0.056    0.955    
 REFERENCEATCC19115    7.269e-02  2.041e-01   0.356    0.722    
@@ -2155,6 +2168,7 @@ DNAextraction_C              NA         NA      NA       NA
 SEQUENCINGNextSeq_B  -8.419e-04  2.948e-03  -0.286    0.775    
 DEPTH                -9.969e-06  9.293e-05  -0.107    0.915    
 BREADTH               1.219e-02  3.520e-02   0.346    0.729    
+IAAS                         NA         NA      NA       NA    
 C0                   -3.867e-04  4.134e-03  -0.094    0.925    
 C1000                 2.550e-03  6.321e-03   0.403    0.687    
 C5000                -2.001e-04  2.102e-02  -0.010    0.992    
@@ -2191,7 +2205,7 @@ UAL                  -2.795e-06  1.202e-05  -0.233    0.816
 GF                   -2.163e-02  2.185e-01  -0.099    0.921    
 DR                    1.324e+00  8.974e+00   0.148    0.883    
 N100                 -3.406e-04  3.367e-05 -10.116   <2e-16 ***
-MM100                -8.987e-05  2.703e-03  -0.033    0.973    
+  MM100                -8.987e-05  2.703e-03  -0.033    0.973    
 ID100                 2.433e-03  1.668e-02   0.146    0.884    
 LA                    2.687e-07  2.749e-07   0.977    0.328    
 TAL                  -1.735e-06  7.909e-06  -0.219    0.826    
@@ -2321,3 +2335,113 @@ summary(data_cgMLST_short$BioNumerics)
 summary(data_cgMLST_short$MentaLiST)
 # => Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 # => 0.00   93.82   99.71   83.00   99.94  100.00
+
+## Additional GLMs with parameters restricted to assembly
+formulaAdditionAssemblyRestricted <- IAAR~IAAS+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
+formulaAdditionAssemblyAloneRestricted <- IAAR~IAAS+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
+
+## run GLM
+RestrictedAssemblyGLM1 <- glm(formulaAdditionAssemblyRestricted, data=datarownameNArowGLM, family = poisson)
+RestrictedAssemblyGLM2 <- glm(formulaAdditionAssemblyRestricted, data=datarownameNArowGLM, family = poisson(link = "log"))
+RestrictedAssemblyGLM3 <- glm(formulaAdditionAssemblyRestricted, data=datarownameNArowGLM, family = quasipoisson)
+RestrictedBIGSdbGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BIGSdb, family = poisson)
+RestrictedBIGSdbGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BIGSdb, family = poisson(link = "log"))
+RestrictedBIGSdbGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BIGSdb, family = quasipoisson)
+RestrictedINNUENDOGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.INNUENDO, family = poisson)
+RestrictedINNUENDOGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.INNUENDO, family = poisson(link = "log"))
+RestrictedINNUENDOGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.INNUENDO, family = quasipoisson)
+RestrictedGENPATGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.GENPAT, family = poisson)
+RestrictedGENPATGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.GENPAT, family = poisson(link = "log"))
+RestrictedGENPATGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.GENPAT, family = quasipoisson)
+RestrictedSeqSphereGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.SeqSphere, family = poisson)
+RestrictedSeqSphereGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.SeqSphere, family = poisson(link = "log"))
+RestrictedSeqSphereGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.SeqSphere, family = quasipoisson)
+RestrictedBioNumericsGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BioNumerics, family = poisson)
+RestrictedBioNumericsGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BioNumerics, family = poisson(link = "log"))
+RestrictedBioNumericsGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BioNumerics, family = quasipoisson)
+
+### test over dispersion  (i.e. alpha > 0 with p<5%)
+dispersiontest(RestrictedAssemblyGLM1,trafo=1)
+z = -443.57, p-value = 1
+sample estimates: alpha -0.9863838
+dispersiontest(RestrictedAssemblyGLM2,trafo=1)
+z = -443.57, p-value = 1
+sample estimates: alpha -0.9863838
+dispersiontest(RestrictedAssemblyGLM3,trafo=1)
+only Poisson GLMs can be tested
+=> absence of  GLM overdispersion => keep poisson (BIGSdbGLM1)
+dispersiontest(RestrictedBIGSdbGLM1,trafo=1)
+z = -21547, p-value = 1
+sample estimates: alpha -0.9997529
+dispersiontest(RestrictedBIGSdbGLM2,trafo=1)
+z = -21547, p-value = 1
+sample estimates: alpha -0.9997529 
+dispersiontest(RestrictedBIGSdbGLM3,trafo=1)
+only Poisson GLMs can be tested
+=> absence of  GLM overdispersion => keep poisson (BIGSdbGLM1)
+dispersiontest(RestrictedINNUENDOGLM1,trafo=1)
+z = -109620, p-value = 1
+sample estimates: alpha -0.99998
+dispersiontest(RestrictedINNUENDOGLM2,trafo=1)
+z = -109620, p-value = 1
+sample estimates: alpha -0.99998
+dispersiontest(RestrictedINNUENDOGLM3,trafo=1)
+only Poisson GLMs can be tested
+=> absence of  GLM overdispersion => keep poisson (INNUENDOGLM1)
+dispersiontest(RestrictedGENPATGLM1,trafo=1)
+z = -34046, p-value = 1
+sample estimates: alpha -9998608   
+dispersiontest(RestrictedGENPATGLM2,trafo=1)
+z = -34046, p-value = 1
+sample estimates: alpha -9998608   
+dispersiontest(RestrictedGENPATGLM3,trafo=1)
+only Poisson GLMs can be tested
+=> absence of  GLM overdispersion => keep poisson (GENPATGLM1)
+dispersiontest(RestrictedSeqSphereGLM1,trafo=1)
+z = -22235, p-value = 1
+sample estimates: alpha -0.999751 
+dispersiontest(RestrictedSeqSphereGLM2,trafo=1)
+z = -22235, p-value = 1
+sample estimates: alpha -0.999751 
+dispersiontest(RestrictedSeqSphereGLM3,trafo=1)
+only Poisson GLMs can be tested
+=> absence of  GLM overdispersion => keep poisson (SeqSphereGLM1)
+dispersiontest(RestrictedBioNumericsGLM1,trafo=1)
+z = -205.91, p-value = 1
+sample estimates: alpha -0.9762896
+dispersiontest(RestrictedBioNumericsGLM2,trafo=1)
+z = -205.91, p-value = 1
+sample estimates: alpha -0.9762896
+dispersiontest(RestrictedBioNumericsGLM3,trafo=1)
+only Poisson GLMs can be tested
+=> absence of  GLM overdispersion => keep poisson (BioNumericsGLM1)
+
+## check significant parameters (<0.01)
+summary(RestrictedAssemblyGLM1) # 5 significant parameters (IAAS, TL0, UAL, N100, TAL)
+summary(RestrictedBIGSdbGLM1) # 0 significant parameters
+summary(RestrictedINNUENDOGLM1) # 0 significant parameters
+summary(RestrictedGENPATGLM1) # 0 significant parameters
+summary(RestrictedSeqSphereGLM1) # 0 significant parameters
+summary(RestrictedBioNumericsGLM1) # 1 significant parameters: N100
+
+# => no differences of GLM conclusions with or without initial parameters in the GLM formula (REFERENCE+PLATING+DNA+SEQUENCING+DEPTH+BREADTH)
+
+## save GLM results
+write.csv(summary(RestrictedAssemblyGLM1)['coefficients'], file="RestrictedAssemblyGLM1.csv")
+write.csv(summary(RestrictedAssemblyGLM2)['coefficients'], file="RestrictedAssemblyGLM2.csv")
+write.csv(summary(RestrictedAssemblyGLM3)['coefficients'], file="RestrictedAssemblyGLM3.csv")
+write.csv(summary(RestrictedBIGSdbGLM1)['coefficients'], file="RestrictedBIGSdbGLM1.csv")
+write.csv(summary(RestrictedBIGSdbGLM2)['coefficients'], file="RestrictedBIGSdbGLM2.csv")
+write.csv(summary(RestrictedBIGSdbGLM3)['coefficients'], file="RestrictedBIGSdbGLM3.csv")
+write.csv(summary(RestrictedINNUENDOGLM1)['coefficients'], file="RestrictedINNUENDOGLM1.csv")
+write.csv(summary(RestrictedINNUENDOGLM2)['coefficients'], file="RestrictedINNUENDOGLM2.csv")
+write.csv(summary(RestrictedINNUENDOGLM3)['coefficients'], file="RestrictedINNUENDOGLM3.csv")
+write.csv(summary(RestrictedGENPATGLM1)['coefficients'], file="RestrictedGENPATGLM1.csv")
+write.csv(summary(RestrictedGENPATGLM2)['coefficients'], file="RestrictedGENPATGLM2.csv")
+write.csv(summary(RestrictedGENPATGLM3)['coefficients'], file="RestrictedGENPATGLM3.csv")
+write.csv(summary(RestrictedSeqSphereGLM1)['coefficients'], file="RestrictedSeqSphereGLM1.csv")
+write.csv(summary(RestrictedSeqSphereGLM2)['coefficients'], file="RestrictedSeqSphereGLM2.csv")
+write.csv(summary(RestrictedSeqSphereGLM3)['coefficients'], file="RestrictedSeqSphereGLM3.csv")
+write.csv(summary(RestrictedBioNumericsGLM1)['coefficients'], file="RestrictedBioNumericsGLM1.csv")
+write.csv(summary(RestrictedBioNumericsGLM2)['coefficients'], file="RestrictedBioNumericsGLM2.csv")
+write.csv(summary(RestrictedBioNumericsGLM3)['coefficients'], file="RestrictedBioNumericsGLM3.csv")
