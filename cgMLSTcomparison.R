@@ -575,8 +575,8 @@ dev.off()
 ## simplify names of 'numerical columns (num and int) with acronyms
 colnames(data_cgMLST)
 dataACRONYMS  <- data_cgMLST
-names(dataACRONYMS)[names(dataACRONYMS) == "BBMap_read_depth"] <- "RD"
-names(dataACRONYMS)[names(dataACRONYMS) == "BBMap_read_breadth"] <- "RB"
+names(dataACRONYMS)[names(dataACRONYMS) == "BBMap_read_depth"] <- "DEPTH"
+names(dataACRONYMS)[names(dataACRONYMS) == "BBMap_read_breadth"] <- "BREADTH"
 names(dataACRONYMS)[names(dataACRONYMS) == "contigs_0bp"] <- "C0"
 names(dataACRONYMS)[names(dataACRONYMS) == "contigs_1000bp"] <- "C1000"
 names(dataACRONYMS)[names(dataACRONYMS) == "contigs_5000bp"] <- "C5000"
@@ -676,8 +676,8 @@ comment <- scan(what="character")
 [4] "DNA_extraction_replicate"
 [5] "sequencing_replicate"    
 [6] "targeted_depth"          
-[7] "RD"                      
-[8] "RB"                      
+[7] "DEPTH"                      
+[8] "BREADTH"                      
 [9] "INNUca_read_depth"       
 [10] "workflow"                
 [11] "UIAAS"                   
@@ -723,7 +723,7 @@ rm(comment)
 ggbiplot(datarownameNAcol.pca)
 
 ### add labels (not necessary because too many data)
-ggbiplot(datarownameNAcol.pca, labels=rownames(data))
+ggbiplot(datarownameNAcol.pca, labels=rownames(datarownameNAcol))
 
 ### add ellipse from dataframe
 datarownameNAcol.refence <- datarownameNAcol$reference_strain
@@ -855,8 +855,8 @@ comment <- scan(what="character")
 [4] "DNA_extraction_replicate"
 [5] "sequencing_replicate"    
 [6] "targeted_depth"          
-[7] "RD"                      
-[8] "RB"                      
+[7] "DEPTH"                      
+[8] "BREADTH"                      
 [9] "INNUca_read_depth"       
 [10] "workflow"                
 [11] "C0"                      
@@ -985,7 +985,7 @@ comment <- scan(what="character")
 rm(comment)  
 ### group 6
 comment <- scan(what="character")
-[7] "RD" 
+[7] "DEPTH" 
 [44] "GF"  
 rm(comment)
 ### group 7
@@ -1007,7 +1007,7 @@ comment <- scan(what="character")
 [35] "MAC" 
 ### ungrouped
 comment <- scan(what="character")
-[8] "RB"       
+[8] "BREADTH"       
 [23] "LC"                      
 [40] "UAMC"                    
 [42] "UACP"                    
@@ -1178,8 +1178,8 @@ names(datarownameNAcolGLM)[names(datarownameNAcolGLM) == "DNA_extraction_replica
 names(datarownameNAcolGLM)[names(datarownameNAcolGLM) == "sequencing_replicate"] <- "SEQUENCING"
 names(datarownameNAcolGLM)[names(datarownameNAcolGLM) == "targeted_depth"] <- "DrDk"
 names(datarownameNAcolGLM)[names(datarownameNAcolGLM) == "workflow"] <- "WORKFLOW"
-names(datarownameNAcolGLM)[names(datarownameNAcolGLM) == "RD"] <- "DEPTH"
-names(datarownameNAcolGLM)[names(datarownameNAcolGLM) == "RB"] <- "BREADTH"
+names(datarownameNAcolGLM)[names(datarownameNAcolGLM) == "DEPTH"] <- "DEPTH"
+names(datarownameNAcolGLM)[names(datarownameNAcolGLM) == "BREADTH"] <- "BREADTH"
 colnames(datarownameNAcolGLM)
 str(datarownameNAcolGLM)
 
