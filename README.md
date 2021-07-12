@@ -55,6 +55,6 @@ sudo apt install libssl-dev
 rstudio cgMLSTcomparison.R
 ```
 # Acknowledgment
-My old colleagues Laurent Guillier with whom I learned a lot
+My old colleague Laurent Guillier with whom I learned a lot
 # Author
 Nicolas Radomski
