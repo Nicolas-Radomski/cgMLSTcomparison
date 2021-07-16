@@ -1,5 +1,5 @@
 # Usage
-The R script cgMLSTcomparison.R aims at performing Principal Component Analysis (PCA) and Generalized Linear Model (GLM) from cgMLST outcomes described in the "Listeria-cgMLST-Additional-file-3.tsv" of the article entitled "In vitro and in silico parameters for accurate cgMLST typing of Listeria monocytogenes".
+The R script cgMLSTcomparison.R aims at performing Principal Component Analysis (PCA) and Generalized Linear Model (GLM) from cgMLST outcomes described in the "Listeria-cgMLST-Additional-file-3.tsv" of the article entitled "In vitro and in silico parameters for precise cgMLST typing of Listeria monocytogenes".
 # Dependencies
 The R script DownsampledReads.R was prepared and tested with R version 3.6.3 and RStudio 1.3.1093.
 - library(ggplot2)
