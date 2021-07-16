@@ -54,6 +54,8 @@ sudo apt install libssl-dev
 ```
 rstudio cgMLSTcomparison.R
 ```
+# Illustration
+![PCA figure](https://github.com/Nicolas-Radomski/cgMLSTcomparison/blob/main/illustration.png)
 # Acknowledgment
 My old colleague Laurent Guillier with whom I learned a lot
 # Author
