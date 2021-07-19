@@ -2243,11 +2243,11 @@ write.csv(summary(BioNumericsGLM1)['coefficients'], file="BioNumericsGLM1.csv")
 write.csv(summary(BioNumericsGLM2)['coefficients'], file="BioNumericsGLM2.csv")
 write.csv(summary(BioNumericsGLM3)['coefficients'], file="BioNumericsGLM3.csv")
 
-# Accuracy (i.e. IAAR/1748*100)
-## add accuracy (%)
-data_cgMLST$accuracy <- data_cgMLST$identical_alleles_against_reference / 1748 * 100
+# Precision (i.e. IAAR/1748*100)
+## add precision (%)
+data_cgMLST$precision <- data_cgMLST$identical_alleles_against_reference / 1748 * 100
 ## pass from long to short dataframe
-data_cgMLST_short <- dcast(data_cgMLST, formula = sample+reference_strain+targeted_depth~workflow, value.var = "accuracy")
+data_cgMLST_short <- dcast(data_cgMLST, formula = sample+reference_strain+targeted_depth~workflow, value.var = "precision")
 ## check variables
 str(data_cgMLST_short)
 ## check dimensions
@@ -2268,7 +2268,7 @@ table_ATCC19114=ddply(data_cgMLST_short_ATCC19114, .(targeted_depth), summarize,
       BioNumerics_sd=sd(BioNumerics),
       MentaLiST_mean=mean(MentaLiST), 
       MentaLiST_sd=sd(MentaLiST))
-write.table(table_ATCC19114, file = "Accuracy_ATCC19114.csv", sep = ",", col.names = NA)
+write.table(table_ATCC19114, file = "Precision_ATCC19114.csv", sep = ",", col.names = NA)
 data_cgMLST_short_ATCC19115=subset(data_cgMLST_short,reference_strain == "ATCC19115")
 table_ATCC19115=ddply(data_cgMLST_short_ATCC19115, .(targeted_depth), summarize, 
        BIGSdb_mean=mean(BIGSdb), 
@@ -2283,7 +2283,7 @@ table_ATCC19115=ddply(data_cgMLST_short_ATCC19115, .(targeted_depth), summarize,
        BioNumerics_sd=sd(BioNumerics),
        MentaLiST_mean=mean(MentaLiST), 
        MentaLiST_sd=sd(MentaLiST))
-write.table(table_ATCC19115, file = "Accuracy_ATCC19115.csv", sep = ",", col.names = NA)
+write.table(table_ATCC19115, file = "Precision_ATCC19115.csv", sep = ",", col.names = NA)
 data_cgMLST_short_ATCCBAA679=subset(data_cgMLST_short,reference_strain == "ATCCBAA679")
 table_ATCCBAA679=ddply(data_cgMLST_short_ATCCBAA679, .(targeted_depth), summarize, 
        BIGSdb_mean=mean(BIGSdb), 
@@ -2298,7 +2298,7 @@ table_ATCCBAA679=ddply(data_cgMLST_short_ATCCBAA679, .(targeted_depth), summariz
        BioNumerics_sd=sd(BioNumerics),
        MentaLiST_mean=mean(MentaLiST), 
        MentaLiST_sd=sd(MentaLiST))
-write.table(table_ATCCBAA679, file = "Accuracy_ATCCBAA679.csv", sep = ",", col.names = NA)
+write.table(table_ATCCBAA679, file = "Precision_ATCCBAA679.csv", sep = ",", col.names = NA)
 
 ## all ATCC included
 table_ATCC=ddply(data_cgMLST_short, .(targeted_depth), summarize, 
@@ -2314,7 +2314,7 @@ table_ATCC=ddply(data_cgMLST_short, .(targeted_depth), summarize,
        BioNumerics_sd=sd(BioNumerics),
        MentaLiST_mean=mean(MentaLiST), 
        MentaLiST_sd=sd(MentaLiST))
-write.table(table_ATCC, file = "Accuracy_ATCC.csv", sep = ",", col.names = NA)
+write.table(table_ATCC, file = "Precision_ATCC.csv", sep = ",", col.names = NA)
 
 ## all DrDk included
 summary(data_cgMLST_short$BIGSdb)
