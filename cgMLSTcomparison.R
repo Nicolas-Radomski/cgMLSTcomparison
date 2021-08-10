@@ -684,6 +684,7 @@ comment <- scan(what="character")
 [12] "MIAAR"                   
 [13] "IAAS"                    
 [14] "IAAR" 
+
 rm(comment)
 
 ## compute the principal components
@@ -697,6 +698,7 @@ Importance of components:
 Standard deviation     1.3954 1.0102 0.8765 0.51365
 Proportion of Variance 0.4868 0.2551 0.1921 0.06596
 Cumulative Proportion  0.4868 0.7420 0.9340 1.00000
+
 rm(comment)
 
 ## call PCA objects
@@ -717,6 +719,7 @@ $ x       : num [1:2436, 1:4] -2.326 -1.505 -1.332 0.434 -0.482 ...
 .. ..$ : chr [1:2436] "1" "2" "3" "4" ...
 .. ..$ : chr [1:4] "PC1" "PC2" "PC3" "PC4"
 - attr(*, "class")= chr "prcomp"
+
 rm(comment)
 
 ## plot PCA
@@ -911,6 +914,7 @@ comment <- scan(what="character")
 [60] "MIAAR"                   
 [61] "IAAS"                    
 [62] "IAAR"
+
 rm(comment)
 
 ## compute the principal components
@@ -942,7 +946,9 @@ comment <- scan(what="character")
 [14] "C10000"                  
 [15] "C25000"                  
 [16] "C50000" 
+
 rm(comment)       
+
 ### group 2
 comment <- scan(what="character")
 [25] "GC" 
@@ -955,7 +961,9 @@ comment <- scan(what="character")
 [24] "TL"
 [50] "TAL" 
 [36] "MACL"  
+
 rm(comment)
+
 ### group 3
 comment <- scan(what="character")
 [26] "N50"                     
@@ -968,43 +976,58 @@ comment <- scan(what="character")
 [53] "NA75"                    
 [54] "NGA75"  
 [49] "LA"  
+
 rm(comment)
+
 ### group 4
 comment <- scan(what="character")
 [30] "L50"                     
 [31] "LG50"                    
 [32] "L75"                     
 [33] "LG75"
+
 rm(comment)
+
 ### group 5
 comment <- scan(what="character")
 [55] "LA50"                    
 [56] "LGA50"                   
 [57] "LA75"   
 [58] "LGA75" 
+
 rm(comment)  
+
 ### group 6
 comment <- scan(what="character")
 [7] "DEPTH" 
 [44] "GF"  
+
 rm(comment)
+
 ### group 7
 comment <- scan(what="character")
 [37] "LMA"
 [43] "UAL"
 [47] "MM100"  
 [39] "SQLM" 
+
 rm(comment)
+
 ### group 8
 comment <- scan(what="character")
 [45] "DR"  
 [46] "N100"  
 [41] "UAC" 
+
 rm(comment)
+
 ### group 9
 comment <- scan(what="character")
 [34] "MA"  
 [35] "MAC" 
+
+rm(comment)
+
 ### ungrouped
 comment <- scan(what="character")
 [8] "BREADTH"       
@@ -1014,6 +1037,7 @@ comment <- scan(what="character")
 [48] "ID100"                   
 [61] "IAAS"                    
 [62] "IAAR"
+
 rm(comment)
 
 ## compute the principal components
@@ -1243,6 +1267,7 @@ Null deviance: 185666  on 2435  degrees of freedom
 Residual deviance: 154801  on 2420  degrees of freedom
 AIC: 177133
 Number of Fisher Scoring iterations: 4
+
 rm(comment)
 
 summary(GLM2)
@@ -1277,6 +1302,7 @@ Null deviance: 185666  on 2435  degrees of freedom
 Residual deviance: 154801  on 2420  degrees of freedom
 AIC: 177133
 Number of Fisher Scoring iterations: 4
+
 rm(comment)
 
 summary(GLM3)
@@ -1311,6 +1337,7 @@ Null deviance: 185666  on 2435  degrees of freedom
 Residual deviance: 154801  on 2420  degrees of freedom
 AIC: NA
 Number of Fisher Scoring iterations: 4
+
 rm(comment)
 
 ## save GLM results
@@ -1468,6 +1495,7 @@ Null deviance: 6542.130  on 2015  degrees of freedom
 Residual deviance:   25.142  on 1954  degrees of freedom
 AIC: 18886
 Number of Fisher Scoring iterations: 3
+
 rm(comment)
 
 summary(AssemblyGLM2)
@@ -1549,6 +1577,7 @@ Null deviance: 6542.130  on 2015  degrees of freedom
 Residual deviance:   25.142  on 1954  degrees of freedom
 AIC: 18886
 Number of Fisher Scoring iterations: 3
+
 rm(comment)
 
 summary(AssemblyGLM3)
@@ -1625,14 +1654,12 @@ LA75                  1.266e-03  9.728e-04    1.301 0.193442
 LGA75                -1.412e-03  8.673e-04   -1.628 0.103624    
 ---
   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
 (Dispersion parameter for quasipoisson family taken to be 0.01287379)
-
 Null deviance: 6542.130  on 2015  degrees of freedom
 Residual deviance:   25.142  on 1954  degrees of freedom
 AIC: NA
-
 Number of Fisher Scoring iterations: 3
+
 rm(comment)
 
 ## save GLM results
@@ -1922,6 +1949,7 @@ Null deviance: 1.97544  on 419  degrees of freedom
 Residual deviance: 0.10102  on 364  degrees of freedom
 AIC: 4019.3
 Number of Fisher Scoring iterations: 3
+
 rm(comment)
 
 summary(INNUENDOGLM1)
@@ -1997,6 +2025,7 @@ Null deviance: 0.186103  on 335  degrees of freedom
 Residual deviance: 0.006147  on 288  degrees of freedom
 AIC: 3221.5
 Number of Fisher Scoring iterations: 2
+
 rm(comment)
 
 summary(GENPATGLM1)
@@ -2072,6 +2101,7 @@ Null deviance: 0.607339  on 419  degrees of freedom
 Residual deviance: 0.054826  on 364  degrees of freedom
 AIC: 4018.8
 Number of Fisher Scoring iterations: 3
+
 rm(comment)
 
 summary(SeqSphereGLM1)
@@ -2147,6 +2177,7 @@ Null deviance: 1.74158  on 419  degrees of freedom
 Residual deviance: 0.10112  on 367  degrees of freedom
 AIC: 4013.4
 Number of Fisher Scoring iterations: 3
+
 rm(comment)
 
 summary(BioNumericsGLM1)
@@ -2224,6 +2255,7 @@ Null deviance: 5835.822  on 419  degrees of freedom
 Residual deviance:    9.688  on 363  degrees of freedom
 AIC: 4014.1
 Number of Fisher Scoring iterations: 3
+
 rm(comment)
 
 ## save GLM results
@@ -2362,59 +2394,59 @@ RestrictedBioNumericsGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=da
 
 ### test over dispersion  (i.e. alpha > 0 with p<5%)
 dispersiontest(RestrictedAssemblyGLM1,trafo=1)
-z = -443.57, p-value = 1
-sample estimates: alpha -0.9863838
+# => z = -443.57, p-value = 1
+# => sample estimates: alpha -0.9863838
 dispersiontest(RestrictedAssemblyGLM2,trafo=1)
-z = -443.57, p-value = 1
-sample estimates: alpha -0.9863838
+# => z = -443.57, p-value = 1
+# => sample estimates: alpha -0.9863838
 dispersiontest(RestrictedAssemblyGLM3,trafo=1)
-only Poisson GLMs can be tested
-=> absence of  GLM overdispersion => keep poisson (BIGSdbGLM1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (BIGSdbGLM1)
 dispersiontest(RestrictedBIGSdbGLM1,trafo=1)
-z = -21547, p-value = 1
-sample estimates: alpha -0.9997529
+# => z = -21547, p-value = 1
+# => sample estimates: alpha -0.9997529
 dispersiontest(RestrictedBIGSdbGLM2,trafo=1)
-z = -21547, p-value = 1
-sample estimates: alpha -0.9997529 
+# => z = -21547, p-value = 1
+# => sample estimates: alpha -0.9997529 
 dispersiontest(RestrictedBIGSdbGLM3,trafo=1)
-only Poisson GLMs can be tested
-=> absence of  GLM overdispersion => keep poisson (BIGSdbGLM1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (BIGSdbGLM1)
 dispersiontest(RestrictedINNUENDOGLM1,trafo=1)
-z = -109620, p-value = 1
-sample estimates: alpha -0.99998
+# => z = -109620, p-value = 1
+# => sample estimates: alpha -0.99998
 dispersiontest(RestrictedINNUENDOGLM2,trafo=1)
-z = -109620, p-value = 1
-sample estimates: alpha -0.99998
+# => z = -109620, p-value = 1
+# => sample estimates: alpha -0.99998
 dispersiontest(RestrictedINNUENDOGLM3,trafo=1)
-only Poisson GLMs can be tested
-=> absence of  GLM overdispersion => keep poisson (INNUENDOGLM1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (INNUENDOGLM1)
 dispersiontest(RestrictedGENPATGLM1,trafo=1)
-z = -34046, p-value = 1
-sample estimates: alpha -9998608   
+# => z = -34046, p-value = 1
+# => sample estimates: alpha -9998608   
 dispersiontest(RestrictedGENPATGLM2,trafo=1)
-z = -34046, p-value = 1
-sample estimates: alpha -9998608   
+# => z = -34046, p-value = 1
+# => sample estimates: alpha -9998608   
 dispersiontest(RestrictedGENPATGLM3,trafo=1)
-only Poisson GLMs can be tested
-=> absence of  GLM overdispersion => keep poisson (GENPATGLM1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (GENPATGLM1)
 dispersiontest(RestrictedSeqSphereGLM1,trafo=1)
-z = -22235, p-value = 1
-sample estimates: alpha -0.999751 
+# => z = -22235, p-value = 1
+# => sample estimates: alpha -0.999751 
 dispersiontest(RestrictedSeqSphereGLM2,trafo=1)
-z = -22235, p-value = 1
-sample estimates: alpha -0.999751 
+# => z = -22235, p-value = 1
+# => sample estimates: alpha -0.999751 
 dispersiontest(RestrictedSeqSphereGLM3,trafo=1)
-only Poisson GLMs can be tested
-=> absence of  GLM overdispersion => keep poisson (SeqSphereGLM1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (SeqSphereGLM1)
 dispersiontest(RestrictedBioNumericsGLM1,trafo=1)
-z = -205.91, p-value = 1
-sample estimates: alpha -0.9762896
+# => z = -205.91, p-value = 1
+# => sample estimates: alpha -0.9762896
 dispersiontest(RestrictedBioNumericsGLM2,trafo=1)
-z = -205.91, p-value = 1
-sample estimates: alpha -0.9762896
+# => z = -205.91, p-value = 1
+# => sample estimates: alpha -0.9762896
 dispersiontest(RestrictedBioNumericsGLM3,trafo=1)
-only Poisson GLMs can be tested
-=> absence of  GLM overdispersion => keep poisson (BioNumericsGLM1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (BioNumericsGLM1)
 
 ## check significant parameters (<0.01)
 summary(RestrictedAssemblyGLM1) # 5 significant parameters (IAAS, TL0, UAL, N100, TAL)
