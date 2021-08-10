@@ -57,6 +57,6 @@ rstudio cgMLSTcomparison.R
 # Illustration
 ![PCA figure](https://github.com/Nicolas-Radomski/cgMLSTcomparison/blob/main/illustration.png)
 # Acknowledgment
-My former colleague Laurent Guillier with who I learned a lot in R
+My former colleague Laurent Guillier with whom I learned a lot about R
 # Author
 Nicolas Radomski
