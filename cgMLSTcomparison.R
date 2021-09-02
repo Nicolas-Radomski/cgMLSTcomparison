@@ -938,6 +938,7 @@ ggsave("PCA-no-MentaLIST-all-parameters.pdf",device="pdf",width=17,height=17,uni
 dev.off()
 
 ## grouped manually numerical parameters
+
 ### group 1
 comment <- scan(what="character")
 [11] "C0"                      
@@ -947,7 +948,7 @@ comment <- scan(what="character")
 [15] "C25000"                  
 [16] "C50000" 
 
-rm(comment)       
+rm(comment)
 
 ### group 2
 comment <- scan(what="character")
@@ -995,7 +996,7 @@ comment <- scan(what="character")
 [57] "LA75"   
 [58] "LGA75" 
 
-rm(comment)  
+rm(comment)
 
 ### group 6
 comment <- scan(what="character")
@@ -1024,7 +1025,7 @@ rm(comment)
 ### group 9
 comment <- scan(what="character")
 [34] "MA"  
-[35] "MAC" 
+[35] "MAC"
 
 rm(comment)
 
@@ -2367,6 +2368,53 @@ summary(data_cgMLST_short$BioNumerics)
 summary(data_cgMLST_short$MentaLiST)
 # => Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 # => 0.00   93.82   99.71   83.00   99.94  100.00
+
+## DrDk >= 40X
+### subset
+str(data_cgMLST)
+data_cgMLST$targeted_depth
+data_cgMLST_40X = subset(data_cgMLST,data_cgMLST$targeted_depth %in% c("Dr100-Dk75","Dr90-Dk68","Dr80-Dk60","Dr70-Dk53","Dr60-Dk45","Dr50-Dk38","Dr40-Dk31"))
+dim(data_cgMLST_40X)
+### pass from long to short dataframe
+data_cgMLST_40X_short <- dcast(data_cgMLST_40X, formula = sample+reference_strain+targeted_depth~workflow, value.var = "precision")
+### check variables
+str(data_cgMLST_40X_short)
+### check dimensions
+dim(data_cgMLST_40X_short)
+### all ATCC included >= 40X
+table_ATCC_40=ddply(data_cgMLST_40X_short, .(targeted_depth), summarize, 
+   BIGSdb_mean=mean(BIGSdb), 
+   BIGSdb_sd=sd(BIGSdb), 
+   INNUENDO_mean=mean(INNUENDO), 
+   INNUENDO_sd=sd(INNUENDO),
+   GENPAT_mean=mean(GENPAT), 
+   GENPAT_sd=sd(GENPAT),
+   SeqSphere_mean=mean(SeqSphere), 
+   SeqSphere_sd=sd(SeqSphere),
+   BioNumerics_mean=mean(BioNumerics), 
+   BioNumerics_sd=sd(BioNumerics),
+   MentaLiST_mean=mean(MentaLiST), 
+   MentaLiST_sd=sd(MentaLiST))
+write.table(table_ATCC, file = "Precision_ATCC_40X.csv", sep = ",", col.names = NA)
+### synthesis
+summary(data_cgMLST_40X_short$BIGSdb)
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+99.66   99.71  100.00   99.90  100.00  100.00
+summary(data_cgMLST_40X_short$INNUENDO)
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+99.66   99.71   99.83   99.79   99.83   99.83
+summary(data_cgMLST_40X_short$GENPAT)
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+99.66   99.71   99.83   99.79   99.83   99.83
+summary(data_cgMLST_40X_short$SeqSphere)
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+99.66   99.71  100.00   99.90  100.00  100.00
+summary(data_cgMLST_40X_short$BioNumerics)
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+97.65   97.83  100.00   99.25  100.00  100.00
+summary(data_cgMLST_40X_short$MentaLiST)
+Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+99.26   99.71   99.94   99.86  100.00  100.00
 
 ## Additional GLMs with parameters restricted to assembly
 formulaAdditionAssemblyRestricted <- IAAR~IAAS+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
