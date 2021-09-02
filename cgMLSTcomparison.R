@@ -2398,23 +2398,23 @@ table_ATCC_40=ddply(data_cgMLST_40X_short, .(targeted_depth), summarize,
 write.table(table_ATCC, file = "Precision_ATCC_40X.csv", sep = ",", col.names = NA)
 ### synthesis
 summary(data_cgMLST_40X_short$BIGSdb)
-Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-99.66   99.71  100.00   99.90  100.00  100.00
+# => Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# => 99.66   99.71  100.00   99.90  100.00  100.00
 summary(data_cgMLST_40X_short$INNUENDO)
-Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-99.66   99.71   99.83   99.79   99.83   99.83
+# => Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# => 99.66   99.71   99.83   99.79   99.83   99.83
 summary(data_cgMLST_40X_short$GENPAT)
-Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-99.66   99.71   99.83   99.79   99.83   99.83
+# => Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# => 99.66   99.71   99.83   99.79   99.83   99.83
 summary(data_cgMLST_40X_short$SeqSphere)
-Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-99.66   99.71  100.00   99.90  100.00  100.00
+# => Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# => 99.66   99.71  100.00   99.90  100.00  100.00
 summary(data_cgMLST_40X_short$BioNumerics)
-Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-97.65   97.83  100.00   99.25  100.00  100.00
+# => Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# => 97.65   97.83  100.00   99.25  100.00  100.00
 summary(data_cgMLST_40X_short$MentaLiST)
-Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-99.26   99.71   99.94   99.86  100.00  100.00
+# => Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+# => 99.26   99.71   99.94   99.86  100.00  100.00
 
 ## Additional GLMs with parameters restricted to assembly
 formulaAdditionAssemblyRestricted <- IAAR~IAAS+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
