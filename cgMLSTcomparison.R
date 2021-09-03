@@ -2617,3 +2617,62 @@ write.csv(summary(RestrictedSeqSphereGLM3)['coefficients'], file="RestrictedSeqS
 write.csv(summary(RestrictedBioNumericsGLM1)['coefficients'], file="RestrictedBioNumericsGLM1.csv")
 write.csv(summary(RestrictedBioNumericsGLM2)['coefficients'], file="RestrictedBioNumericsGLM2.csv")
 write.csv(summary(RestrictedBioNumericsGLM3)['coefficients'], file="RestrictedBioNumericsGLM3.csv")
+
+
+#### Additional non parametric tests between strains (i.e. datarownameNArow: all cgMLST workflows excepted MentaLIST which does not present assembly output) ####
+
+# switch from long to short dataframe for Wilcoxon tests
+str(datarownameNArow)
+dim(datarownameNArow)
+# => [1] 2016   62
+datarownameNArow_subset = subset(datarownameNArow,datarownameNArow$targeted_depth %in% c("Dr100-Dk75", "Dr90-Dk68", "Dr80-Dk60", "Dr70-Dk53", "Dr60-Dk45", "Dr50-Dk38", "Dr40-Dk31", "Dr30-Dk23"))
+dim(datarownameNArow_subset)
+# => [1] 1680   62
+## differences of GC% (GC)
+datarownameNArow_subset_short_GC <- dcast(datarownameNArow_subset, formula = sample+workflow+targeted_depth~reference_strain, value.var = "GC")
+str(datarownameNArow_subset_short_GC)
+dim(datarownameNArow_subset_short_GC)
+# => [1] 1680    6
+mean(datarownameNArow_subset_short_GC$ATCC19114, na.rm = TRUE)
+# => [1] 38.08109
+sd(datarownameNArow_subset_short_GC$ATCC19114, na.rm = TRUE)
+# => [1] 0.007570248
+mean(datarownameNArow_subset_short_GC$ATCC19115, na.rm = TRUE)
+# => [1] 37.8798
+sd(datarownameNArow_subset_short_GC$ATCC19115, na.rm = TRUE)
+# => [1] 0.006617372
+mean(datarownameNArow_subset_short_GC$ATCCBAA679, na.rm = TRUE)
+# => 37.86525
+sd(datarownameNArow_subset_short_GC$ATCCBAA679, na.rm = TRUE)
+# => [1] 0.006919548
+wilcox.test(datarownameNArow_subset_short_GC$ATCC19114, datarownameNArow_subset_short_GC$ATCC19115, paired = FALSE, na.rm = TRUE)
+# => W = 313600, p-value < 2.2e-16
+wilcox.test(datarownameNArow_subset_short_GC$ATCC19114, datarownameNArow_subset_short_GC$ATCCBAA679, paired = FALSE, na.rm = TRUE)
+# => W = 313600, p-value < 2.2e-16
+wilcox.test(datarownameNArow_subset_short_GC$ATCC19115, datarownameNArow_subset_short_GC$ATCCBAA679, paired = FALSE, na.rm = TRUE)
+# => W = 285422, p-value < 2.2e-16
+
+## differences of duplication ratio (DR)
+datarownameNArow_subset_short_DR <- dcast(datarownameNArow_subset, formula = sample+workflow+targeted_depth~reference_strain, value.var = "DR")
+str(datarownameNArow_subset_short_DR)
+dim(datarownameNArow_subset_short_DR)
+# => [1] 1680    6
+mean(datarownameNArow_subset_short_DR$ATCC19114, na.rm = TRUE)
+# => [1] 1.000163
+sd(datarownameNArow_subset_short_DR$ATCC19114, na.rm = TRUE)
+# => [1] 0.0003692387
+mean(datarownameNArow_subset_short_DR$ATCC19115, na.rm = TRUE)
+# => [1] 1.00018
+sd(datarownameNArow_subset_short_DR$ATCC19115, na.rm = TRUE)
+# => [1] 0.0003940159
+mean(datarownameNArow_subset_short_DR$ATCCBAA679, na.rm = TRUE)
+# => 1.000061
+sd(datarownameNArow_subset_short_DR$ATCCBAA679, na.rm = TRUE)
+# => [1] 0.0008991506
+wilcox.test(datarownameNArow_subset_short_DR$ATCC19114, datarownameNArow_subset_short_DR$ATCC19115, paired = FALSE, na.rm = TRUE)
+# => W = 154469, p-value = 0.5078
+wilcox.test(datarownameNArow_subset_short_DR$ATCC19114, datarownameNArow_subset_short_DR$ATCCBAA679, paired = FALSE, na.rm = TRUE)
+# => W = 313600, W = 162778, p-value = 0.07424
+wilcox.test(datarownameNArow_subset_short_DR$ATCC19115, datarownameNArow_subset_short_DR$ATCCBAA679, paired = FALSE, na.rm = TRUE)
+# => W = 165075, p-value = 0.01535
+
