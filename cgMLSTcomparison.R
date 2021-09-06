@@ -2628,6 +2628,7 @@ dim(datarownameNArow)
 datarownameNArow_subset = subset(datarownameNArow,datarownameNArow$targeted_depth %in% c("Dr100-Dk75", "Dr90-Dk68", "Dr80-Dk60", "Dr70-Dk53", "Dr60-Dk45", "Dr50-Dk38", "Dr40-Dk31", "Dr30-Dk23"))
 dim(datarownameNArow_subset)
 # => [1] 1680   62
+
 ## differences of GC% (GC)
 datarownameNArow_subset_short_GC <- dcast(datarownameNArow_subset, formula = workflow+sample_origin+DNA_extraction_replicate+sequencing_replicate+targeted_depth~reference_strain, value.var = "GC")
 str(datarownameNArow_subset_short_GC)
