@@ -57,7 +57,7 @@ rstudio cgMLSTcomparison.R
 # Illustration
 ![PCA figure](https://github.com/Nicolas-Radomski/cgMLSTcomparison/blob/main/illustration.png)
 # Reference
-Mangone I., Janowicz A., Chiaverini A., Torresi M., Garofolo G., Palma F., Moura A., Criscuolo A., Brisse S., Di Pasquale A., Camma C. and N. Radomski. In vitro and in silico parameters for precise cgMLST typing of Listeria monocytogenes 2021, under reviewing
+Mangone I., Palma F., Janowicz A., Moura A., Chiaverini A., Torresi M., Garofolo G., Criscuolo A., Brisse S., Di Pasquale A., Camma C. and N. Radomski. In vitro and in silico parameters for precise cgMLST typing of Listeria monocytogenes 2021, under reviewing
 # Acknowledgment
 My former colleague Laurent Guillier with whom I learned a lot about R
 # Author
