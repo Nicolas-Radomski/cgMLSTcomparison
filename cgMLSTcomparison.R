@@ -65,6 +65,72 @@ data_BioNumerics = subset(data,data$workflow %in% c("BioNumericsAB","BioNumerics
 dim(data_BioNumerics)
 # => [1] 840  63
 
+# Wilcoxon tests
+## switch from long to short dataframe
+str(data_BioNumerics)
+data_BioNumerics_short <- dcast(data_BioNumerics, formula = sample+reference_strain+targeted_depth~workflow, value.var = "identical_alleles_against_reference")
+str(data_BioNumerics_short)
+dim(data_BioNumerics_short)
+# => [1] 420   5
+## Wilcoxon tests for all read depth coverage
+wilcox.test(data_BioNumerics_short$BioNumericsAB, data_BioNumerics_short$BioNumericsAF, paired = TRUE)
+# => p-value < 2.2e-16
+
+## subset each targeted_depth
+levels(data_BioNumerics_short$targeted_depth)
+data_BioNumerics_short_Dr100 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr100-Dk75"))
+dim(data_BioNumerics_short_Dr100)
+# => [1] 42  5
+data_BioNumerics_short_Dr90 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr90-Dk68"))
+dim(data_BioNumerics_short_Dr90)
+# => [1] 42  5
+data_BioNumerics_short_Dr80 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr80-Dk60"))
+dim(data_BioNumerics_short_Dr80)
+# => [1] 42  5
+data_BioNumerics_short_Dr70 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr70-Dk53"))
+dim(data_BioNumerics_short_Dr70)
+# => [1] 42  5
+data_BioNumerics_short_Dr60 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr60-Dk45"))
+dim(data_BioNumerics_short_Dr60)
+# => [1] 42  5
+data_BioNumerics_short_Dr50 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr50-Dk38"))
+dim(data_BioNumerics_short_Dr50)
+# => [1] 42  5
+data_BioNumerics_short_Dr40 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr40-Dk31"))
+dim(data_BioNumerics_short_Dr40)
+# => [1] 42  5
+data_BioNumerics_short_Dr30= subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr30-Dk23"))
+dim(data_BioNumerics_short_Dr30)
+# => [1] 42  5
+data_BioNumerics_short_Dr20= subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr20-Dk16"))
+dim(data_BioNumerics_short_Dr20)
+# => [1] 42  5
+data_BioNumerics_short_Dr10= subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr10-Dk8"))
+dim(data_BioNumerics_short_Dr10)
+# => [1] 42  5
+
+## Wilcoxon signed rank tests for each targeted_depth (in case of dependent sampling, which is  the case)
+wilcox.test(data_BioNumerics_short_Dr100$BioNumericsAB, data_BioNumerics_short_Dr100$BioNumericsAF, paired = TRUE)
+# => p-value = 4.112e-07
+wilcox.test(data_BioNumerics_short_Dr90$BioNumericsAB, data_BioNumerics_short_Dr90$BioNumericsAF, paired = TRUE)
+# => p-value = 4.184e-07
+wilcox.test(data_BioNumerics_short_Dr80$BioNumericsAB, data_BioNumerics_short_Dr80$BioNumericsAF, paired = TRUE)
+# => p-value = 1.936e-06
+wilcox.test(data_BioNumerics_short_Dr70$BioNumericsAB, data_BioNumerics_short_Dr70$BioNumericsAF, paired = TRUE)
+# => p-value = 7.891e-07
+wilcox.test(data_BioNumerics_short_Dr60$BioNumericsAB, data_BioNumerics_short_Dr60$BioNumericsAF, paired = TRUE)
+# => p-value = 4.012e-06
+wilcox.test(data_BioNumerics_short_Dr50$BioNumericsAB, data_BioNumerics_short_Dr50$BioNumericsAF, paired = TRUE)
+# => p-value = 2.189e-07
+wilcox.test(data_BioNumerics_short_Dr40$BioNumericsAB, data_BioNumerics_short_Dr40$BioNumericsAF, paired = TRUE)
+# => p-value = 9.359e-07
+wilcox.test(data_BioNumerics_short_Dr30$BioNumericsAB, data_BioNumerics_short_Dr30$BioNumericsAF, paired = TRUE)
+# => p-value = 2.649e-07
+wilcox.test(data_BioNumerics_short_Dr20$BioNumericsAB, data_BioNumerics_short_Dr20$BioNumericsAF, paired = TRUE)
+# => p-value = 9.564e-08
+wilcox.test(data_BioNumerics_short_Dr10$BioNumericsAB, data_BioNumerics_short_Dr10$BioNumericsAF, paired = TRUE)
+# => p-value = 9.379e-08
+
 # plot identical_alleles_against_reference for BioNumerics
 p = ggplot(data = data_BioNumerics, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
   theme_light(base_size = 16) +
@@ -155,509 +221,6 @@ p
 plot(p)
 ggsave("BioNumerics-D-zoom.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
 ggsave("BioNumerics-D-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# Wilcoxon tests
-## switch from long to short dataframe
-str(data_BioNumerics)
-data_BioNumerics_short <- dcast(data_BioNumerics, formula = sample+reference_strain+targeted_depth~workflow, value.var = "identical_alleles_against_reference")
-str(data_BioNumerics_short)
-dim(data_BioNumerics_short)
-# => [1] 420   5
-## Wilcoxon tests for all read depth coverage
-wilcox.test(data_BioNumerics_short$BioNumericsAB, data_BioNumerics_short$BioNumericsAF, paired = TRUE)
-# => p-value < 2.2e-16
-
-## subset each targeted_depth
-levels(data_BioNumerics_short$targeted_depth)
-data_BioNumerics_short_Dr100 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr100-Dk75"))
-dim(data_BioNumerics_short_Dr100)
-# => [1] 42  5
-data_BioNumerics_short_Dr90 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr90-Dk68"))
-dim(data_BioNumerics_short_Dr90)
-# => [1] 42  5
-data_BioNumerics_short_Dr80 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr80-Dk60"))
-dim(data_BioNumerics_short_Dr80)
-# => [1] 42  5
-data_BioNumerics_short_Dr70 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr70-Dk53"))
-dim(data_BioNumerics_short_Dr70)
-# => [1] 42  5
-data_BioNumerics_short_Dr60 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr60-Dk45"))
-dim(data_BioNumerics_short_Dr60)
-# => [1] 42  5
-data_BioNumerics_short_Dr50 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr50-Dk38"))
-dim(data_BioNumerics_short_Dr50)
-# => [1] 42  5
-data_BioNumerics_short_Dr40 = subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr40-Dk31"))
-dim(data_BioNumerics_short_Dr40)
-# => [1] 42  5
-data_BioNumerics_short_Dr30= subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr30-Dk23"))
-dim(data_BioNumerics_short_Dr30)
-# => [1] 42  5
-data_BioNumerics_short_Dr20= subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr20-Dk16"))
-dim(data_BioNumerics_short_Dr20)
-# => [1] 42  5
-data_BioNumerics_short_Dr10= subset(data_BioNumerics_short,data_BioNumerics_short$targeted_depth %in% c("Dr10-Dk8"))
-dim(data_BioNumerics_short_Dr10)
-# => [1] 42  5
-
-## Wilcoxon signed rank tests for each targeted_depth (in case of dependent sampling, which is  the case)
-wilcox.test(data_BioNumerics_short_Dr100$BioNumericsAB, data_BioNumerics_short_Dr100$BioNumericsAF, paired = TRUE)
-# => p-value = 4.112e-07
-wilcox.test(data_BioNumerics_short_Dr90$BioNumericsAB, data_BioNumerics_short_Dr90$BioNumericsAF, paired = TRUE)
-# => p-value = 4.184e-07
-wilcox.test(data_BioNumerics_short_Dr80$BioNumericsAB, data_BioNumerics_short_Dr80$BioNumericsAF, paired = TRUE)
-# => p-value = 1.936e-06
-wilcox.test(data_BioNumerics_short_Dr70$BioNumericsAB, data_BioNumerics_short_Dr70$BioNumericsAF, paired = TRUE)
-# => p-value = 7.891e-07
-wilcox.test(data_BioNumerics_short_Dr60$BioNumericsAB, data_BioNumerics_short_Dr60$BioNumericsAF, paired = TRUE)
-# => p-value = 4.012e-06
-wilcox.test(data_BioNumerics_short_Dr50$BioNumericsAB, data_BioNumerics_short_Dr50$BioNumericsAF, paired = TRUE)
-# => p-value = 2.189e-07
-wilcox.test(data_BioNumerics_short_Dr40$BioNumericsAB, data_BioNumerics_short_Dr40$BioNumericsAF, paired = TRUE)
-# => p-value = 9.359e-07
-wilcox.test(data_BioNumerics_short_Dr30$BioNumericsAB, data_BioNumerics_short_Dr30$BioNumericsAF, paired = TRUE)
-# => p-value = 2.649e-07
-wilcox.test(data_BioNumerics_short_Dr20$BioNumericsAB, data_BioNumerics_short_Dr20$BioNumericsAF, paired = TRUE)
-# => p-value = 9.564e-08
-wilcox.test(data_BioNumerics_short_Dr10$BioNumericsAB, data_BioNumerics_short_Dr10$BioNumericsAF, paired = TRUE)
-# => p-value = 9.379e-08
-
-#### BIGSdb versus INNUENDO versus GENPAT versus SeqSphere versus BioNumerics versus MentaLiST ####
-
-# rename levels of a factor
-levels(data$workflow)
-data$workflow = revalue(data$workflow, c(
-  "BIGSdb" = "BIGSdb", 
-  "INNUENDO" = "INNUENDO", 
-  "GENPAT" = "GENPAT", 
-  "SeqSphere" = "SeqSphere", 
-  "BioNumericsAB" = "BioNumericsAB", 
-  "BioNumericsAF" = "BioNumerics",
-  "MentaLiST" = "MentaLiST"))
-levels(data$workflow)
-
-# subset without BioNumericsAB
-data_cgMLST = subset(data,data$workflow %in% c("BIGSdb","INNUENDO","GENPAT","SeqSphere","BioNumerics","MentaLiST"))
-dim(data)
-# => [1] 2856   63
-dim(data_cgMLST)
-# => [1] 2436   63
-levels(data_cgMLST$workflow)
-str(data_cgMLST)
-
-# plot identified_alleles_against_schema for reference
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_against_schema)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("A") +
-  facet_grid(reference_strain ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-A-schema-ATCC.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-A-schema-ATCC.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot identified_alleles_against_schema for plating
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_against_schema)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of successive plating and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("B") +
-  facet_grid(sample_origin ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-B-schema-plating.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-B-schema-plating.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot identified_alleles_against_schema for extraction
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_against_schema)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of DNA extraction replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("C") +
-  facet_grid(DNA_extraction_replicate ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-C-schema-extraction.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-C-schema-extraction.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot identified_alleles_against_schema for sequencing
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_against_schema)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("D") +
-  facet_grid(sequencing_replicate ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-D-schema-sequencing.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-D-schema-sequencing.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot identical_alleles_against_reference for reference
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("E") +
-  facet_grid(reference_strain ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-E-reference-ATCC.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-E-reference-ATCC.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot identical_alleles_against_reference for plating
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of successive plating and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("F") +
-  facet_grid(sample_origin ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-F-schema-plating.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-F-schema-plating.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot identical_alleles_against_reference for extraction
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of DNA extraction replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("G") +
-  facet_grid(DNA_extraction_replicate ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-G-reference-extraction.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-G-reference-extraction.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot identical_alleles_against_reference for sequencing
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("H") +
-  facet_grid(sequencing_replicate ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-H-reference-sequencing.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-H-reference-sequencing.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot zoom identical_alleles_against_reference for reference
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Zoom in impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("I") +
-  facet_grid(reference_strain ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-I-reference-ATCC-zoom.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-I-reference-ATCC-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot zoom identical_alleles_against_reference for plating
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1730, 1750), breaks = c(1730,1735,1740,1745,1750)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of successive plating and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("J") +
-  facet_grid(sample_origin ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-J-schema-plating.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-J-schema-plating.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot zoom identical_alleles_against_reference for extraction
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1730, 1750), breaks = c(1730,1735,1740,1745,1750)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Zoom in impact of DNA extraction replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("K") +
-  facet_grid(DNA_extraction_replicate ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-K-reference-extraction-zoom.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-K-reference-extraction-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot zoom identical_alleles_against_reference for sequencing
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1730, 1750), breaks = c(1730,1735,1740,1745,1750)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Zoom in impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("L") +
-  facet_grid(sequencing_replicate ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-L-reference-sequencing-zoom.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-L-reference-sequencing-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot identical_alleles_against_reference for reference_strain in figure
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("A") +
-  facet_grid(reference_strain ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-merged-A-reference.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-merged-A-reference.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot zoom identical_alleles_against_reference for reference_strain in figure
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Zoom in impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("B") +
-  facet_grid(reference_strain ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-merged-B-reference-zoom.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-merged-B-reference-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot misidentified_alleles_against_reference for reference_strain in figure
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = misidentified_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Misidentified alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("A") +
-  facet_grid(reference_strain ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-merged-A-reference-misidentified.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-merged-A-reference-misidentified.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot zoom misidentified_alleles_against_reference for reference_strain in figure
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = misidentified_alleles_against_reference)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Misidentified alleles against reference (restricted scale)", limits = c(0, 30), breaks = c(0,10,20,30)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Zoom in impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("B") +
-  facet_grid(reference_strain ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-merged-B-reference-zoom-misidentified.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-merged-B-reference-zoom-misidentified.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot unidentified_alleles_against_schema for reference_strain in figure
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = unidentified_alleles_against_schema)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Unidentified alleles against schema (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("A") +
-  facet_grid(reference_strain ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-merged-A-reference-unidentified.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-merged-A-reference-unidentified.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
-dev.off()
-
-# plot zoom unidentified_alleles_against_schema for reference_strain in figure
-p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = unidentified_alleles_against_schema)) +
-  theme_light(base_size = 16) +
-  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
-  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
-  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Unidentified alleles against schema (restricted scale)", limits = c(0, 50), breaks = c(0,10,20,30,40,50)) +
-  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
-  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
-        strip.text.x = element_text(size=8, face = "bold"),
-        strip.text.y = element_text(size=8, face="bold"),
-        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
-  #theme(plot.title = element_text(hjust = 0.5)) +
-  #ggtitle("Zoom in impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
-  theme(plot.title = element_text(size = 30, face = "bold")) +
-  ggtitle("B") +
-  facet_grid(reference_strain ~ workflow)
-p
-plot(p)
-ggsave("cgMLST-merged-B-reference-zoom-unidentified.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
-ggsave("cgMLST-merged-B-reference-zoom-unidentified.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
 dev.off()
 
 #### Principal Component Analysis (PCA) ####
@@ -2368,7 +1931,555 @@ write.csv(summary(BioNumericsGLM1)['coefficients'], file="BioNumericsGLM1.csv")
 write.csv(summary(BioNumericsGLM2)['coefficients'], file="BioNumericsGLM2.csv")
 write.csv(summary(BioNumericsGLM3)['coefficients'], file="BioNumericsGLM3.csv")
 
-# Precision (i.e. IAAR/1748*100)
+
+## Additional GLMs with parameters restricted to assembly
+formulaAdditionAssemblyRestricted <- IAAR~IAAS+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
+formulaAdditionAssemblyAloneRestricted <- IAAR~IAAS+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
+
+## run GLM
+RestrictedAssemblyGLM1 <- glm(formulaAdditionAssemblyRestricted, data=datarownameNArowGLM, family = poisson)
+RestrictedAssemblyGLM2 <- glm(formulaAdditionAssemblyRestricted, data=datarownameNArowGLM, family = poisson(link = "log"))
+RestrictedAssemblyGLM3 <- glm(formulaAdditionAssemblyRestricted, data=datarownameNArowGLM, family = quasipoisson)
+RestrictedBIGSdbGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BIGSdb, family = poisson)
+RestrictedBIGSdbGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BIGSdb, family = poisson(link = "log"))
+RestrictedBIGSdbGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BIGSdb, family = quasipoisson)
+RestrictedINNUENDOGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.INNUENDO, family = poisson)
+RestrictedINNUENDOGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.INNUENDO, family = poisson(link = "log"))
+RestrictedINNUENDOGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.INNUENDO, family = quasipoisson)
+RestrictedGENPATGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.GENPAT, family = poisson)
+RestrictedGENPATGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.GENPAT, family = poisson(link = "log"))
+RestrictedGENPATGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.GENPAT, family = quasipoisson)
+RestrictedSeqSphereGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.SeqSphere, family = poisson)
+RestrictedSeqSphereGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.SeqSphere, family = poisson(link = "log"))
+RestrictedSeqSphereGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.SeqSphere, family = quasipoisson)
+RestrictedBioNumericsGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BioNumerics, family = poisson)
+RestrictedBioNumericsGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BioNumerics, family = poisson(link = "log"))
+RestrictedBioNumericsGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BioNumerics, family = quasipoisson)
+
+### test over dispersion  (i.e. alpha > 0 with p<5%)
+dispersiontest(RestrictedAssemblyGLM1,trafo=1)
+# => z = -443.57, p-value = 1
+# => sample estimates: alpha -0.9863838
+dispersiontest(RestrictedAssemblyGLM2,trafo=1)
+# => z = -443.57, p-value = 1
+# => sample estimates: alpha -0.9863838
+dispersiontest(RestrictedAssemblyGLM3,trafo=1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (BIGSdbGLM1)
+dispersiontest(RestrictedBIGSdbGLM1,trafo=1)
+# => z = -21547, p-value = 1
+# => sample estimates: alpha -0.9997529
+dispersiontest(RestrictedBIGSdbGLM2,trafo=1)
+# => z = -21547, p-value = 1
+# => sample estimates: alpha -0.9997529 
+dispersiontest(RestrictedBIGSdbGLM3,trafo=1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (BIGSdbGLM1)
+dispersiontest(RestrictedINNUENDOGLM1,trafo=1)
+# => z = -109620, p-value = 1
+# => sample estimates: alpha -0.99998
+dispersiontest(RestrictedINNUENDOGLM2,trafo=1)
+# => z = -109620, p-value = 1
+# => sample estimates: alpha -0.99998
+dispersiontest(RestrictedINNUENDOGLM3,trafo=1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (INNUENDOGLM1)
+dispersiontest(RestrictedGENPATGLM1,trafo=1)
+# => z = -34046, p-value = 1
+# => sample estimates: alpha -9998608   
+dispersiontest(RestrictedGENPATGLM2,trafo=1)
+# => z = -34046, p-value = 1
+# => sample estimates: alpha -9998608   
+dispersiontest(RestrictedGENPATGLM3,trafo=1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (GENPATGLM1)
+dispersiontest(RestrictedSeqSphereGLM1,trafo=1)
+# => z = -22235, p-value = 1
+# => sample estimates: alpha -0.999751 
+dispersiontest(RestrictedSeqSphereGLM2,trafo=1)
+# => z = -22235, p-value = 1
+# => sample estimates: alpha -0.999751 
+dispersiontest(RestrictedSeqSphereGLM3,trafo=1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (SeqSphereGLM1)
+dispersiontest(RestrictedBioNumericsGLM1,trafo=1)
+# => z = -205.91, p-value = 1
+# => sample estimates: alpha -0.9762896
+dispersiontest(RestrictedBioNumericsGLM2,trafo=1)
+# => z = -205.91, p-value = 1
+# => sample estimates: alpha -0.9762896
+dispersiontest(RestrictedBioNumericsGLM3,trafo=1)
+# => only Poisson GLMs can be tested
+# => absence of  GLM overdispersion => keep poisson (BioNumericsGLM1)
+
+## check significant parameters (<0.01)
+summary(RestrictedAssemblyGLM1) # 5 significant parameters (IAAS, TL0, UAL, N100, TAL)
+summary(RestrictedBIGSdbGLM1) # 0 significant parameters
+summary(RestrictedINNUENDOGLM1) # 0 significant parameters
+summary(RestrictedGENPATGLM1) # 0 significant parameters
+summary(RestrictedSeqSphereGLM1) # 0 significant parameters
+summary(RestrictedBioNumericsGLM1) # 1 significant parameters: N100
+
+# => no differences of GLM conclusions with or without initial parameters in the GLM formula (REFERENCE+PLATING+DNA+SEQUENCING+DEPTH+BREADTH)
+
+## save GLM results
+write.csv(summary(RestrictedAssemblyGLM1)['coefficients'], file="RestrictedAssemblyGLM1.csv")
+write.csv(summary(RestrictedAssemblyGLM2)['coefficients'], file="RestrictedAssemblyGLM2.csv")
+write.csv(summary(RestrictedAssemblyGLM3)['coefficients'], file="RestrictedAssemblyGLM3.csv")
+write.csv(summary(RestrictedBIGSdbGLM1)['coefficients'], file="RestrictedBIGSdbGLM1.csv")
+write.csv(summary(RestrictedBIGSdbGLM2)['coefficients'], file="RestrictedBIGSdbGLM2.csv")
+write.csv(summary(RestrictedBIGSdbGLM3)['coefficients'], file="RestrictedBIGSdbGLM3.csv")
+write.csv(summary(RestrictedINNUENDOGLM1)['coefficients'], file="RestrictedINNUENDOGLM1.csv")
+write.csv(summary(RestrictedINNUENDOGLM2)['coefficients'], file="RestrictedINNUENDOGLM2.csv")
+write.csv(summary(RestrictedINNUENDOGLM3)['coefficients'], file="RestrictedINNUENDOGLM3.csv")
+write.csv(summary(RestrictedGENPATGLM1)['coefficients'], file="RestrictedGENPATGLM1.csv")
+write.csv(summary(RestrictedGENPATGLM2)['coefficients'], file="RestrictedGENPATGLM2.csv")
+write.csv(summary(RestrictedGENPATGLM3)['coefficients'], file="RestrictedGENPATGLM3.csv")
+write.csv(summary(RestrictedSeqSphereGLM1)['coefficients'], file="RestrictedSeqSphereGLM1.csv")
+write.csv(summary(RestrictedSeqSphereGLM2)['coefficients'], file="RestrictedSeqSphereGLM2.csv")
+write.csv(summary(RestrictedSeqSphereGLM3)['coefficients'], file="RestrictedSeqSphereGLM3.csv")
+write.csv(summary(RestrictedBioNumericsGLM1)['coefficients'], file="RestrictedBioNumericsGLM1.csv")
+write.csv(summary(RestrictedBioNumericsGLM2)['coefficients'], file="RestrictedBioNumericsGLM2.csv")
+write.csv(summary(RestrictedBioNumericsGLM3)['coefficients'], file="RestrictedBioNumericsGLM3.csv")
+
+#### Graphical confirmation: BIGSdb versus INNUENDO versus GENPAT versus SeqSphere versus BioNumerics versus MentaLiST ####
+
+# rename levels of a factor
+levels(data$workflow)
+data$workflow = revalue(data$workflow, c(
+  "BIGSdb" = "BIGSdb", 
+  "INNUENDO" = "INNUENDO", 
+  "GENPAT" = "GENPAT", 
+  "SeqSphere" = "SeqSphere", 
+  "BioNumericsAB" = "BioNumericsAB", 
+  "BioNumericsAF" = "BioNumerics",
+  "MentaLiST" = "MentaLiST"))
+levels(data$workflow)
+
+# subset without BioNumericsAB
+data_cgMLST = subset(data,data$workflow %in% c("BIGSdb","INNUENDO","GENPAT","SeqSphere","BioNumerics","MentaLiST"))
+dim(data)
+# => [1] 2856   63
+dim(data_cgMLST)
+# => [1] 2436   63
+levels(data_cgMLST$workflow)
+str(data_cgMLST)
+
+# plot identified_alleles_against_schema for reference
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_against_schema)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("A") +
+  facet_grid(reference_strain ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-A-schema-ATCC.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-A-schema-ATCC.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot identified_alleles_against_schema for plating
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_against_schema)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of successive plating and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("B") +
+  facet_grid(sample_origin ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-B-schema-plating.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-B-schema-plating.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot identified_alleles_against_schema for extraction
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_against_schema)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of DNA extraction replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("C") +
+  facet_grid(DNA_extraction_replicate ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-C-schema-extraction.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-C-schema-extraction.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot identified_alleles_against_schema for sequencing
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_against_schema)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("D") +
+  facet_grid(sequencing_replicate ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-D-schema-sequencing.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-D-schema-sequencing.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot identical_alleles_against_reference for reference
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("E") +
+  facet_grid(reference_strain ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-E-reference-ATCC.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-E-reference-ATCC.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot identical_alleles_against_reference for plating
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of successive plating and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("F") +
+  facet_grid(sample_origin ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-F-schema-plating.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-F-schema-plating.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot identical_alleles_against_reference for extraction
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of DNA extraction replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("G") +
+  facet_grid(DNA_extraction_replicate ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-G-reference-extraction.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-G-reference-extraction.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot identical_alleles_against_reference for sequencing
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("H") +
+  facet_grid(sequencing_replicate ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-H-reference-sequencing.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-H-reference-sequencing.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot zoom identical_alleles_against_reference for reference
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Zoom in impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("I") +
+  facet_grid(reference_strain ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-I-reference-ATCC-zoom.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-I-reference-ATCC-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot zoom identical_alleles_against_reference for plating
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1730, 1750), breaks = c(1730,1735,1740,1745,1750)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of successive plating and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("J") +
+  facet_grid(sample_origin ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-J-schema-plating.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-J-schema-plating.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot zoom identical_alleles_against_reference for extraction
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1730, 1750), breaks = c(1730,1735,1740,1745,1750)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Zoom in impact of DNA extraction replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("K") +
+  facet_grid(DNA_extraction_replicate ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-K-reference-extraction-zoom.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-K-reference-extraction-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot zoom identical_alleles_against_reference for sequencing
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1730, 1750), breaks = c(1730,1735,1740,1745,1750)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Zoom in impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("L") +
+  facet_grid(sequencing_replicate ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-L-reference-sequencing-zoom.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-L-reference-sequencing-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot identical_alleles_against_reference for reference_strain in figure
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("A") +
+  facet_grid(reference_strain ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-merged-A-reference.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-merged-A-reference.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot zoom identical_alleles_against_reference for reference_strain in figure
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Zoom in impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("B") +
+  facet_grid(reference_strain ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-merged-B-reference-zoom.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-merged-B-reference-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot misidentified_alleles_against_reference for reference_strain in figure
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = misidentified_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Misidentified alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("A") +
+  facet_grid(reference_strain ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-merged-A-reference-misidentified.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-merged-A-reference-misidentified.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot zoom misidentified_alleles_against_reference for reference_strain in figure
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = misidentified_alleles_against_reference)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Misidentified alleles against reference (restricted scale)", limits = c(0, 30), breaks = c(0,10,20,30)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Zoom in impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("B") +
+  facet_grid(reference_strain ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-merged-B-reference-zoom-misidentified.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-merged-B-reference-zoom-misidentified.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot unidentified_alleles_against_schema for reference_strain in figure
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = unidentified_alleles_against_schema)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Unidentified alleles against schema (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Impact of sequencing replicate and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("A") +
+  facet_grid(reference_strain ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-merged-A-reference-unidentified.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-merged-A-reference-unidentified.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# plot zoom unidentified_alleles_against_schema for reference_strain in figure
+p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = unidentified_alleles_against_schema)) +
+  theme_light(base_size = 16) +
+  geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
+  geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
+  theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
+  scale_y_continuous(name = "Unidentified alleles against schema (restricted scale)", limits = c(0, 50), breaks = c(0,10,20,30,40,50)) +
+  scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
+  theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
+        strip.text.x = element_text(size=8, face = "bold"),
+        strip.text.y = element_text(size=8, face="bold"),
+        strip.background = element_rect(colour="black", fill="#A9A9A9")) +
+  #theme(plot.title = element_text(hjust = 0.5)) +
+  #ggtitle("Zoom in impact of reference genome and downsampling of paired-end reads (i.e. 2x150bp) \n of Listeria monocytogene (ATCC19114, ATCC19115 and ATCCBAA679) \n on outcomes of cgMLST workflows (n=420 each) performed with BIGSdb Pasteur schema \n (1748 alleles downloaded on March 08, 2021). \n INNUca assemblies (n=336) from INNUENDO cannot be performed for Dr=10X and Dr=20X") +
+  theme(plot.title = element_text(size = 30, face = "bold")) +
+  ggtitle("B") +
+  facet_grid(reference_strain ~ workflow)
+p
+plot(p)
+ggsave("cgMLST-merged-B-reference-zoom-unidentified.tiff",device="tiff",width=17,height=17,units="cm",dpi="retina")
+ggsave("cgMLST-merged-B-reference-zoom-unidentified.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
+dev.off()
+
+# Numerical confirmation: Precision (i.e. IAAR/1748*100)
 ## add precision (%)
 data_cgMLST$precision <- data_cgMLST$identical_alleles_against_reference / 1748 * 100
 ## pass from long to short dataframe
@@ -2508,117 +2619,6 @@ summary(data_cgMLST_40X_short$MentaLiST)
 # => Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 # => 99.26   99.71   99.94   99.86  100.00  100.00
 
-## Additional GLMs with parameters restricted to assembly
-formulaAdditionAssemblyRestricted <- IAAR~IAAS+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
-formulaAdditionAssemblyAloneRestricted <- IAAR~IAAS+C0+C1000+C5000+C10000+C25000+C50000+TL0+TL1000+TL5000+TL10000+TL25000+TL50000+LC+TL+GC+N50+NG50+N75+NG75+L50+LG50+L75+LG75+MA+MAC+MACL+LMA+SQEM+SQLM+UAMC+UAC+UACP+UAL+GF+DR+N100+MM100+ID100+LA+TAL+NA50+NGA50+NA75+NGA75+LA50+LGA50+LA75+LGA75
-
-## run GLM
-RestrictedAssemblyGLM1 <- glm(formulaAdditionAssemblyRestricted, data=datarownameNArowGLM, family = poisson)
-RestrictedAssemblyGLM2 <- glm(formulaAdditionAssemblyRestricted, data=datarownameNArowGLM, family = poisson(link = "log"))
-RestrictedAssemblyGLM3 <- glm(formulaAdditionAssemblyRestricted, data=datarownameNArowGLM, family = quasipoisson)
-RestrictedBIGSdbGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BIGSdb, family = poisson)
-RestrictedBIGSdbGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BIGSdb, family = poisson(link = "log"))
-RestrictedBIGSdbGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BIGSdb, family = quasipoisson)
-RestrictedINNUENDOGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.INNUENDO, family = poisson)
-RestrictedINNUENDOGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.INNUENDO, family = poisson(link = "log"))
-RestrictedINNUENDOGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.INNUENDO, family = quasipoisson)
-RestrictedGENPATGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.GENPAT, family = poisson)
-RestrictedGENPATGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.GENPAT, family = poisson(link = "log"))
-RestrictedGENPATGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.GENPAT, family = quasipoisson)
-RestrictedSeqSphereGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.SeqSphere, family = poisson)
-RestrictedSeqSphereGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.SeqSphere, family = poisson(link = "log"))
-RestrictedSeqSphereGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.SeqSphere, family = quasipoisson)
-RestrictedBioNumericsGLM1 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BioNumerics, family = poisson)
-RestrictedBioNumericsGLM2 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BioNumerics, family = poisson(link = "log"))
-RestrictedBioNumericsGLM3 <- glm(formulaAdditionAssemblyAloneRestricted, data=datarownameNArowGLM.BioNumerics, family = quasipoisson)
-
-### test over dispersion  (i.e. alpha > 0 with p<5%)
-dispersiontest(RestrictedAssemblyGLM1,trafo=1)
-# => z = -443.57, p-value = 1
-# => sample estimates: alpha -0.9863838
-dispersiontest(RestrictedAssemblyGLM2,trafo=1)
-# => z = -443.57, p-value = 1
-# => sample estimates: alpha -0.9863838
-dispersiontest(RestrictedAssemblyGLM3,trafo=1)
-# => only Poisson GLMs can be tested
-# => absence of  GLM overdispersion => keep poisson (BIGSdbGLM1)
-dispersiontest(RestrictedBIGSdbGLM1,trafo=1)
-# => z = -21547, p-value = 1
-# => sample estimates: alpha -0.9997529
-dispersiontest(RestrictedBIGSdbGLM2,trafo=1)
-# => z = -21547, p-value = 1
-# => sample estimates: alpha -0.9997529 
-dispersiontest(RestrictedBIGSdbGLM3,trafo=1)
-# => only Poisson GLMs can be tested
-# => absence of  GLM overdispersion => keep poisson (BIGSdbGLM1)
-dispersiontest(RestrictedINNUENDOGLM1,trafo=1)
-# => z = -109620, p-value = 1
-# => sample estimates: alpha -0.99998
-dispersiontest(RestrictedINNUENDOGLM2,trafo=1)
-# => z = -109620, p-value = 1
-# => sample estimates: alpha -0.99998
-dispersiontest(RestrictedINNUENDOGLM3,trafo=1)
-# => only Poisson GLMs can be tested
-# => absence of  GLM overdispersion => keep poisson (INNUENDOGLM1)
-dispersiontest(RestrictedGENPATGLM1,trafo=1)
-# => z = -34046, p-value = 1
-# => sample estimates: alpha -9998608   
-dispersiontest(RestrictedGENPATGLM2,trafo=1)
-# => z = -34046, p-value = 1
-# => sample estimates: alpha -9998608   
-dispersiontest(RestrictedGENPATGLM3,trafo=1)
-# => only Poisson GLMs can be tested
-# => absence of  GLM overdispersion => keep poisson (GENPATGLM1)
-dispersiontest(RestrictedSeqSphereGLM1,trafo=1)
-# => z = -22235, p-value = 1
-# => sample estimates: alpha -0.999751 
-dispersiontest(RestrictedSeqSphereGLM2,trafo=1)
-# => z = -22235, p-value = 1
-# => sample estimates: alpha -0.999751 
-dispersiontest(RestrictedSeqSphereGLM3,trafo=1)
-# => only Poisson GLMs can be tested
-# => absence of  GLM overdispersion => keep poisson (SeqSphereGLM1)
-dispersiontest(RestrictedBioNumericsGLM1,trafo=1)
-# => z = -205.91, p-value = 1
-# => sample estimates: alpha -0.9762896
-dispersiontest(RestrictedBioNumericsGLM2,trafo=1)
-# => z = -205.91, p-value = 1
-# => sample estimates: alpha -0.9762896
-dispersiontest(RestrictedBioNumericsGLM3,trafo=1)
-# => only Poisson GLMs can be tested
-# => absence of  GLM overdispersion => keep poisson (BioNumericsGLM1)
-
-## check significant parameters (<0.01)
-summary(RestrictedAssemblyGLM1) # 5 significant parameters (IAAS, TL0, UAL, N100, TAL)
-summary(RestrictedBIGSdbGLM1) # 0 significant parameters
-summary(RestrictedINNUENDOGLM1) # 0 significant parameters
-summary(RestrictedGENPATGLM1) # 0 significant parameters
-summary(RestrictedSeqSphereGLM1) # 0 significant parameters
-summary(RestrictedBioNumericsGLM1) # 1 significant parameters: N100
-
-# => no differences of GLM conclusions with or without initial parameters in the GLM formula (REFERENCE+PLATING+DNA+SEQUENCING+DEPTH+BREADTH)
-
-## save GLM results
-write.csv(summary(RestrictedAssemblyGLM1)['coefficients'], file="RestrictedAssemblyGLM1.csv")
-write.csv(summary(RestrictedAssemblyGLM2)['coefficients'], file="RestrictedAssemblyGLM2.csv")
-write.csv(summary(RestrictedAssemblyGLM3)['coefficients'], file="RestrictedAssemblyGLM3.csv")
-write.csv(summary(RestrictedBIGSdbGLM1)['coefficients'], file="RestrictedBIGSdbGLM1.csv")
-write.csv(summary(RestrictedBIGSdbGLM2)['coefficients'], file="RestrictedBIGSdbGLM2.csv")
-write.csv(summary(RestrictedBIGSdbGLM3)['coefficients'], file="RestrictedBIGSdbGLM3.csv")
-write.csv(summary(RestrictedINNUENDOGLM1)['coefficients'], file="RestrictedINNUENDOGLM1.csv")
-write.csv(summary(RestrictedINNUENDOGLM2)['coefficients'], file="RestrictedINNUENDOGLM2.csv")
-write.csv(summary(RestrictedINNUENDOGLM3)['coefficients'], file="RestrictedINNUENDOGLM3.csv")
-write.csv(summary(RestrictedGENPATGLM1)['coefficients'], file="RestrictedGENPATGLM1.csv")
-write.csv(summary(RestrictedGENPATGLM2)['coefficients'], file="RestrictedGENPATGLM2.csv")
-write.csv(summary(RestrictedGENPATGLM3)['coefficients'], file="RestrictedGENPATGLM3.csv")
-write.csv(summary(RestrictedSeqSphereGLM1)['coefficients'], file="RestrictedSeqSphereGLM1.csv")
-write.csv(summary(RestrictedSeqSphereGLM2)['coefficients'], file="RestrictedSeqSphereGLM2.csv")
-write.csv(summary(RestrictedSeqSphereGLM3)['coefficients'], file="RestrictedSeqSphereGLM3.csv")
-write.csv(summary(RestrictedBioNumericsGLM1)['coefficients'], file="RestrictedBioNumericsGLM1.csv")
-write.csv(summary(RestrictedBioNumericsGLM2)['coefficients'], file="RestrictedBioNumericsGLM2.csv")
-write.csv(summary(RestrictedBioNumericsGLM3)['coefficients'], file="RestrictedBioNumericsGLM3.csv")
-
-
 #### Additional non parametric tests between strains (i.e. datarownameNArow: all cgMLST workflows excepted MentaLIST which does not present assembly output) ####
 
 # switch from long to short dataframe for Wilcoxon tests
@@ -2629,10 +2629,10 @@ datarownameNArow_subset = subset(datarownameNArow,datarownameNArow$targeted_dept
 dim(datarownameNArow_subset)
 # => [1] 1680   62
 ## differences of GC% (GC)
-datarownameNArow_subset_short_GC <- dcast(datarownameNArow_subset, formula = sample+workflow+targeted_depth~reference_strain, value.var = "GC")
+datarownameNArow_subset_short_GC <- dcast(datarownameNArow_subset, formula = workflow+sample_origin+DNA_extraction_replicate+sequencing_replicate+targeted_depth~reference_strain, value.var = "GC")
 str(datarownameNArow_subset_short_GC)
 dim(datarownameNArow_subset_short_GC)
-# => [1] 1680    6
+# => [1] 560   8
 mean(datarownameNArow_subset_short_GC$ATCC19114, na.rm = TRUE)
 # => [1] 38.08109
 sd(datarownameNArow_subset_short_GC$ATCC19114, na.rm = TRUE)
@@ -2653,10 +2653,10 @@ wilcox.test(datarownameNArow_subset_short_GC$ATCC19115, datarownameNArow_subset_
 # => W = 285422, p-value < 2.2e-16
 
 ## differences of duplication ratio (DR)
-datarownameNArow_subset_short_DR <- dcast(datarownameNArow_subset, formula = sample+workflow+targeted_depth~reference_strain, value.var = "DR")
+datarownameNArow_subset_short_DR <- dcast(datarownameNArow_subset, formula = workflow+sample_origin+DNA_extraction_replicate+sequencing_replicate+targeted_depth~reference_strain, value.var = "DR")
 str(datarownameNArow_subset_short_DR)
 dim(datarownameNArow_subset_short_DR)
-# => [1] 1680    6
+# => [1] 560   8
 mean(datarownameNArow_subset_short_DR$ATCC19114, na.rm = TRUE)
 # => [1] 1.000163
 sd(datarownameNArow_subset_short_DR$ATCC19114, na.rm = TRUE)
