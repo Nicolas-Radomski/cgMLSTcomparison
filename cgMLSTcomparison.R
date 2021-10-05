@@ -4,7 +4,7 @@
 rm(list=ls())
 
 # set working directory
-setwd("/home/Downloads/cgMLSTcomparison")
+setwd("/PathTo/RstudioWorkingDirectory/cgMLSTcomparison")
 
 # install regular packages
 install.packages("ggplot2")
