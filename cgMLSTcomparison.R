@@ -2071,7 +2071,7 @@ p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_ag
   geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
   geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
   theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_y_continuous(name = "Identified alleles against schema (restricted scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
   scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
   theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
         strip.text.x = element_text(size=8, face = "bold"),
@@ -2094,7 +2094,7 @@ p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_ag
   geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
   geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
   theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_y_continuous(name = "Identified alleles against schema (restricted scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
   scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
   theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
         strip.text.x = element_text(size=8, face = "bold"),
@@ -2117,7 +2117,7 @@ p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_ag
   geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
   geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
   theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_y_continuous(name = "Identified alleles against schema (restricted scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
   scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
   theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
         strip.text.x = element_text(size=8, face = "bold"),
@@ -2140,7 +2140,7 @@ p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_ag
   geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
   geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
   theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identified alleles against schema", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_y_continuous(name = "Identified alleles against schema (restricted scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
   scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
   theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
         strip.text.x = element_text(size=8, face = "bold"),
@@ -2186,7 +2186,7 @@ p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_aga
   geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
   geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
   theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(-1, 1750), breaks = c(0,500,1000,1500)) +
   scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
   theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
         strip.text.x = element_text(size=8, face = "bold"),
@@ -2255,7 +2255,7 @@ p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identical_alleles_aga
   geom_boxplot(color = "#000000", fill = "#A9A9A9", coef = 6, outlier.colour = "white", outlier.shape = 0, outlier.size = 0) +
   geom_point(position = position_jitter(width = 0.2), size = 2, color = "#000000", alpha = 0.7, shape = ".") +
   theme(axis.text.x = element_text (color = "#000000", size = 6, angle = 90, vjust = 0.5)) +
-  scale_y_continuous(name = "Identical alleles against reference (restricted scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
+  scale_y_continuous(name = "Identical alleles against reference (extended scale)", limits = c(1700, 1750), breaks = c(1700,1710,1720,1730,1740,1750)) +
   scale_x_discrete(name = "Targeted read (Dr) and kmer (Dk) depth (X)") +
   theme(plot.title = element_text(color="black", size=10, face="bold.italic"),
         strip.text.x = element_text(size=8, face = "bold"),
