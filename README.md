@@ -34,15 +34,15 @@ R --version
 sudo apt-get update
 sudo apt-get upgrade
 ```
-## 3/ Check available last recent R version
+## 3/ Check the available latest R version
 ```
 sudo apt-cache showpkg r-base
 ```
-## 4/ Update R
+## 4/ Update the lastest R version
 ```
 sudo apt-get install r-base
 ```
-## 5/ Check updated R version
+## 5/ Check the updated R version
 ```
 R --version
 ```
