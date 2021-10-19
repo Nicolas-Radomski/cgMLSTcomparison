@@ -25,7 +25,7 @@ sudo gdebi /home/Downloads/rstudio-1.3.1093-amd64.deb
 rstudio --version
 ```
 # Update R
-## 1/ Check current R version
+## 1/ Check the current R version
 ```
 R --version
 ```
