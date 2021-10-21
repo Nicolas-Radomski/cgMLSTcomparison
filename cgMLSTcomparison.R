@@ -224,7 +224,6 @@ ggsave("BioNumerics-D-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="
 dev.off()
 
 # keep BioNumericsAF output for comparison with the other cgMLST workflow
-
 ## rename levels of a factor
 levels(data$workflow)
 data$workflow = revalue(data$workflow, c(
@@ -236,7 +235,6 @@ data$workflow = revalue(data$workflow, c(
   "BioNumericsAF" = "BioNumerics",
   "MentaLiST" = "MentaLiST"))
 levels(data$workflow)
-
 ## subset without BioNumericsAB
 data_cgMLST = subset(data,data$workflow %in% c("BIGSdb","INNUENDO","GENPAT","SeqSphere","BioNumerics","MentaLiST"))
 dim(data)
