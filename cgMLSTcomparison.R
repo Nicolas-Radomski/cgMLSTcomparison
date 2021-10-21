@@ -223,6 +223,29 @@ ggsave("BioNumerics-D-zoom.tiff",device="tiff",width=17,height=17,units="cm",dpi
 ggsave("BioNumerics-D-zoom.pdf",device="pdf",width=17,height=17,units="cm",dpi="retina")
 dev.off()
 
+# keep BioNumericsAF output for comparison with the other cgMLST workflow
+
+## rename levels of a factor
+levels(data$workflow)
+data$workflow = revalue(data$workflow, c(
+  "BIGSdb" = "BIGSdb", 
+  "INNUENDO" = "INNUENDO", 
+  "GENPAT" = "GENPAT", 
+  "SeqSphere" = "SeqSphere", 
+  "BioNumericsAB" = "BioNumericsAB", 
+  "BioNumericsAF" = "BioNumerics",
+  "MentaLiST" = "MentaLiST"))
+levels(data$workflow)
+
+## subset without BioNumericsAB
+data_cgMLST = subset(data,data$workflow %in% c("BIGSdb","INNUENDO","GENPAT","SeqSphere","BioNumerics","MentaLiST"))
+dim(data)
+# => [1] 2856   63
+dim(data_cgMLST)
+# => [1] 2436   63
+levels(data_cgMLST$workflow)
+str(data_cgMLST)
+
 #### Principal Component Analysis (PCA) ####
 
 # preparation of the dataframe
@@ -2043,27 +2066,6 @@ write.csv(summary(RestrictedBioNumericsGLM2)['coefficients'], file="RestrictedBi
 write.csv(summary(RestrictedBioNumericsGLM3)['coefficients'], file="RestrictedBioNumericsGLM3.csv")
 
 #### Graphical confirmation: BIGSdb versus INNUENDO versus GENPAT versus SeqSphere versus BioNumerics versus MentaLiST ####
-
-# rename levels of a factor
-levels(data$workflow)
-data$workflow = revalue(data$workflow, c(
-  "BIGSdb" = "BIGSdb", 
-  "INNUENDO" = "INNUENDO", 
-  "GENPAT" = "GENPAT", 
-  "SeqSphere" = "SeqSphere", 
-  "BioNumericsAB" = "BioNumericsAB", 
-  "BioNumericsAF" = "BioNumerics",
-  "MentaLiST" = "MentaLiST"))
-levels(data$workflow)
-
-# subset without BioNumericsAB
-data_cgMLST = subset(data,data$workflow %in% c("BIGSdb","INNUENDO","GENPAT","SeqSphere","BioNumerics","MentaLiST"))
-dim(data)
-# => [1] 2856   63
-dim(data_cgMLST)
-# => [1] 2436   63
-levels(data_cgMLST$workflow)
-str(data_cgMLST)
 
 # plot identified_alleles_against_schema for reference
 p = ggplot(data = data_cgMLST, aes(x = targeted_depth, y = identified_alleles_against_schema)) +
