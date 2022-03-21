@@ -1,12 +1,16 @@
 # Usage
-The R script DownsampledReads.R aims at performing 4-way figures and linear regressions based on estimations of depth and breadth coverages from downsampled paired-end reads described in the "Listeria-cgMLST-Additional-file-1.tsv" of the article entitled "In vitro and in silico parameters for precise cgMLST typing of Listeria monocytogenes".
+The R script cgMLSTcomparison.R aims at performing Principal Component Analysis (PCA) and Generalized Linear Model (GLM) from cgMLST outcomes described in the "Listeria-cgMLST-Additional-file-3.tsv" of the article entitled "In vitro and in silico parameters for precise cgMLST typing of Listeria monocytogenes".
 # Dependencies
 The R script DownsampledReads.R was prepared and tested with R version 3.6.3 and RStudio 1.3.1093.
 - library(ggplot2)
 - library(plyr)
 - library(reshape2)
-- library(ggpubr)
-- library(ggpmisc)
+- library(tidyr)
+- library(AER)
+- library(spgs)
+- library(usethis)
+- library(devtools)
+- library(ggbiplot)
 # Install R and Rstudio
 ## 1/ Install R (from configured sources)
 ```
@@ -30,7 +34,7 @@ R --version
 sudo apt-get update
 sudo apt-get upgrade
 ```
-## 3/ Check the available lastest R version
+## 3/ Check the available latest R version
 ```
 sudo apt-cache showpkg r-base
 ```
@@ -42,12 +46,16 @@ sudo apt-get install r-base
 ```
 R --version
 ```
+# Install devtools (Ubuntu 20.04)
+```
+sudo apt install libssl-dev
+```
 # Follow step per step the R script with RStudio
 ```
-rstudio DownsampledReads.R
+rstudio cgMLSTcomparison.R
 ```
 # Illustration
-![4-way figure](https://github.com/Nicolas-Radomski/DownsampledReads/blob/main/illustration.png)
+![PCA figure](https://github.com/Nicolas-Radomski/cgMLSTcomparison/blob/main/illustration.png)
 # Reference
 Palma F., Mangone I., Janowicz A., Moura A., Chiaverini A., Torresi M., Garofolo G., Criscuolo A., Brisse S., Di Pasquale A., Cammà C. and Radomski N. In vitro and in silico parameters for precise cgMLST typing of Listeria monocytogenes. 2022, BMC Genomics, XX(X): XXX, doi: 10.1186/s12864-022-08437-4
 # Acknowledgment
